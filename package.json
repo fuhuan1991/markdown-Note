@@ -20,6 +20,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "clear": "rm -rf ./docs/*",
+    "move": "mv ./build/* ./docs/",
+    "build+": "npm run build && npm run clear && npm run move",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
