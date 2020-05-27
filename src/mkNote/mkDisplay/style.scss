@@ -1,0 +1,71 @@
+.main.mk-mode {
+    .mk-display {
+        width: 50%;
+        overflow: auto;
+        padding: 20px 10px 10px 20px;
+        font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+        line-height: 1.5em;
+        box-sizing: border-box;
+
+        pre {
+            border: 1px solid #ccc;
+        }
+
+        blockquote {
+            color: #666;
+            margin: 0;
+            padding-left: 3em;
+            border-left: 0.5em #eee solid;
+        }
+          
+        tr {
+            border-top: 1px solid #c6cbd1;
+            background: #fff;
+        }
+          
+        th,td {
+            padding: 6px 13px;
+            border: 1px solid #dfe2e5;
+        }
+        
+        table tr:nth-child(2n) {
+            background: #f6f8fa;
+        }
+
+        h1,h2,h3,h4,h5,h6{
+            margin-top: 0.5rem;
+        }
+
+        h1{
+            font-size: 2.5rem;
+            line-height: 2.5rem;
+        }
+
+        h2{
+            font-size: 2rem;
+            line-height: 2rem;
+        }
+
+        h3{
+            font-size: 1.75rem;
+            line-height: 1.75rem;
+        }
+
+        h4{
+            font-size: 1.5rem;
+            line-height: 1.5rem;
+        }
+
+        h5{
+            font-size: 1.25rem;
+            line-height: 1.25rem;
+        }
+
+        img {
+            height: auto;
+            max-width: 90%;
+            margin-left: 5%;
+        }
+
+    }
+}

@@ -1,0 +1,71 @@
+.App {
+  width: 100%;
+  height: 100%;
+  display: flex;
+
+  .ant-layout.ant-layout-has-sider{
+    width: 100%;
+  }
+
+  .icon-btn {
+    color: #ffd152;
+    cursor: pointer;
+  }
+
+  .icon-btn:hover {
+    color: #ebac00;
+  }
+
+  .side-bar {
+    background-color: #574b4f;
+    position: relative;
+
+    .ant-layout-sider-trigger{
+      background-color: #574b4f;
+    }
+
+    .ant-menu.ant-menu-root{
+      width: 100%;
+      background-color: transparent;
+      border-right: 1px solid #ffd152;
+      padding-top: 20px;
+      li {
+        background-color: transparent;
+        color: #ffd152;
+        svg{
+          height: 2rem;
+          width: 2rem;
+        }
+        margin-bottom: 20px;
+      }
+      li:hover{
+        color: #ebac00;
+      }
+      .ant-menu-selected::after,.ant-menu-item-selected::after{
+        display: none;
+      }
+      .ant-menu-submenu-title:hover{
+        color: #ebac00;
+      }
+      .ant-menu-sub{
+        background-color: transparent;
+      }
+      .ant-menu-submenu-arrow:before{
+        background: #ffd152;
+      }
+      .ant-menu-submenu-arrow:after{
+        background: #ffd152;
+      }
+    }
+  }
+
+  .side-bar.ant-layout-sider-collapsed{
+    .forward-arrow.icon-btn {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.ant-menu-submenu-popup.side-bar-popup > .ant-menu{
+  display: none;
+}
