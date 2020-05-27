@@ -14,8 +14,7 @@ This is markdown editor. For now, this is only a front-end part of a online mark
 
 
 
-# Todo list:
----
+## Todo list:
 1. back-end storage system
 2. folder system
 3. user system
