@@ -21,8 +21,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "clear": "rm -rf ./docs/*",
-    "move": "mv ./build/* ./docs/",
-    "build+": "npm run build && npm run clear && npm run move",
+    "move_to_docs": "mv ./build/* ../docs/",
+    "build_G": "npm run build && npm run clear && npm run move_to_docs",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
