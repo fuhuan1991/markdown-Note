@@ -1,0 +1,18 @@
+CREATE TABLE IF NOT EXISTS dir (
+    id UUID PRIMARY KEY NOT NULL,
+    parent_id UUID NOT NULL,
+    name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS content (
+    id UUID PRIMARY KEY NOT NULL,
+    text TEXT
+);
+
+CREATE TABLE IF NOT EXISTS note (
+    id UUID PRIMARY KEY NOT NULL,
+    parent_id UUID NOT NULL,
+    content_id UUID REFERENCES "content" (id),
+    name VARCHAR(50) NOT NULL
+);
+
