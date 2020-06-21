@@ -13,6 +13,7 @@ const options = {
   readOnly: false,
   mode: 'markdown',
   theme: 'darcula',
+  scrollbarStyle: 'null',
 }
 
 class MkEditor extends React.Component {

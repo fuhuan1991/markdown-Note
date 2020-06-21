@@ -58,6 +58,8 @@ permission was granted:
 
 # Todo list:
 ---
-1. back-end storage system
-2. user system`;
+1. refresh after dir change
+2. delete dir
+3. rename dir
+4. user system`;
 export default startingText; 

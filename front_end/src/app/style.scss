@@ -20,6 +20,10 @@
     background-color: #574b4f;
     position: relative;
 
+    .ant-layout-sider-children {
+      overflow-y: auto;
+    }
+
     .ant-layout-sider-trigger{
       background-color: #574b4f;
     }
