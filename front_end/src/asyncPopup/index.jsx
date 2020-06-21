@@ -21,12 +21,17 @@ class AsyncPopup extends React.Component {
 
     this.setState({ confirmLoading: true });
     this.props.apiFunction({ value })
-    .then((res) => {
-      this.setState({ confirmLoading: false });
-      notify('success', res);
-      this.handleCancel();
-    }, 
-    (e) => { this.setState({ confirmLoading: false }); });
+    .then(
+      (res) => {
+        this.setState({ confirmLoading: false });
+        notify('success', res);
+        this.handleCancel();
+        this.props.afterSuccess();
+      }, 
+      (e) => { 
+        this.setState({ confirmLoading: false }); 
+      }
+    );
   };
 
   handleCancel = () => {
@@ -51,6 +56,7 @@ class AsyncPopup extends React.Component {
             value={this.state.value} 
             placeholder={this.props.placeholder}
             onChange={this.onChange}
+            onPressEnter={this.handleOk}
           />
         </Modal>
     );

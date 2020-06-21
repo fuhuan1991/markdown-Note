@@ -31,12 +31,16 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    this.fetchMenuFromRear();
+  }
+
+  fetchMenuFromRear = () => {
     const res = getMenu();
     res.then((data) => {
       console.info('menu', data);
       this.setState({renderedMenu: this.renderMenu(data, true)});
     }, (e) => {
-      notify('error', 'failed to fetch your folders, please refresh');
+      notify('error', 'failed to fetch your notebooks, please refresh');
     });
   }
 
@@ -120,6 +124,7 @@ class App extends React.Component {
           onCancel={this.setNewFolderPopupVisible.bind(this, false)}
           apiFunction={createDir}
           key={Math.random()}
+          afterSuccess={this.fetchMenuFromRear}
         />
       </div>
     );
