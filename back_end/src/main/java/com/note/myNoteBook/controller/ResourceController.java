@@ -1,10 +1,13 @@
 package com.note.myNoteBook.controller;
 
 import com.note.myNoteBook.DirUtil;
+import com.note.myNoteBook.Response;
 import com.note.myNoteBook.MenuUnitType;
 import com.note.myNoteBook.model.*;
 import com.note.myNoteBook.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,15 +36,16 @@ public class ResourceController {
    */
   @CrossOrigin
   @PostMapping(path = "dir/create")
-  public void createDir (@Valid @RequestBody Dir dir) throws Exception {
+  public ResponseEntity<Response> createDir (@Valid @RequestBody Dir dir) {
     System.out.println("----------------create dir-------------------");
     System.out.println(dir);
 
     try {
       this.dirService.insertDir(dir);
+      return new ResponseEntity<>(new Response("ok"), null, HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
-      throw e;
+      return new ResponseEntity<>(new Response(e.getMessage()), null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
