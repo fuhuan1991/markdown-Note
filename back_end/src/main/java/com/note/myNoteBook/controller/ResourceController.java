@@ -155,20 +155,23 @@ public class ResourceController {
    */
   @CrossOrigin
   @DeleteMapping(path = "dir/delete/{id}")
-  public void updateDir (@PathVariable("id") String id) throws Exception{
+  public ResponseEntity<Response> deleteDir (@PathVariable("id") String id) throws Exception{
     System.out.println("----------------update dir-------------------");
     System.out.println(id);
     try {
+      Dir d = this.dirService.getDirById(UUID.fromString(id));
+      if (d == null) throw new RuntimeException("notebook does not exist");
       this.dirService.deleteDir(UUID.fromString(id));
+      return new ResponseEntity<>(new Response("directory deleted"), null, HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
-      throw e;
+      return new ResponseEntity<>(new Response(e.getMessage()), null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   @CrossOrigin
   @DeleteMapping(path = "note/delete/{id}")
-  public void deleteNote (@PathVariable("id") String id) throws Exception{
+  public ResponseEntity<Response> deleteNote (@PathVariable("id") String id) throws Exception{
     System.out.println("----------------update note-------------------");
     System.out.println(id);
     try {
@@ -176,9 +179,10 @@ public class ResourceController {
       if (n == null) throw new RuntimeException("note does not exist");
       this.noteService.deleteNote(UUID.fromString(id));
       this.contentService.deleteContent(n.getContent_id());
+      return new ResponseEntity<>(new Response("note deleted"), null, HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
-      throw e;
+      return new ResponseEntity<>(new Response(e.getMessage()), null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }
