@@ -6,7 +6,7 @@ const baseUrl = 'http://localhost:8080/';
 
 // check the status of all sort of response
 const checkStatus = response => {
-  console.log("response", response);
+  // console.log("response", response);
   if (response.ok) {
     return response;
   } else {
@@ -50,6 +50,17 @@ export const createDir = data => fetch(baseUrl + 'api/dir/create/', {
 .then(checkStatus)
 .then(res => {
   return "notebook created";
+}, e => {
+  return Promise.reject();
+});
+
+// delete a existing notebook(directory)
+export const deleteDir = (id) => fetch(baseUrl + `api/dir/delete/${id}`, {
+  method: 'DELETE',
+})
+.then(checkStatus)
+.then(res => {
+  return "notebook deleted";
 }, e => {
   return Promise.reject();
 });

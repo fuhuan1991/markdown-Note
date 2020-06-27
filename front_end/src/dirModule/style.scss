@@ -1,0 +1,50 @@
+.module-frame {
+    .dir-module {
+        padding: 16px;
+        .fileContainer {
+            padding: 8px;
+            .unit {
+                display: inline-block;
+                width: 160px;
+                height: 110px;
+                overflow: hidden;
+                position: relative;
+                padding: 0px 6px;
+                .file-name {
+                    width: 100%;
+                    font-size: 18px;
+                    font-weight: 500;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                .lower-buttons {
+                    .ant-btn-sm {
+                        opacity: 0;
+                        height: 24px;
+                        padding: 0px 4px;
+                        font-size: 14px;
+                        border-radius: 2px;
+                        margin-right: 6px;
+                        transition: 0.2s;
+                    }
+                }
+                .ant-btn-dangerous{
+                    opacity: 0;
+                    position: absolute;
+                    right: 36px;
+                    top: 10px;
+                    transition: 0.2s;
+                }
+            }
+            .unit:hover{
+                .ant-btn-sm {
+                    opacity: 1;
+                }
+                .ant-btn-dangerous{
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}

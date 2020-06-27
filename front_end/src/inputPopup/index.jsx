@@ -2,7 +2,7 @@ import { Modal, Input } from 'antd';
 import React from 'react';
 import { notify } from '../notification';
 
-class AsyncPopup extends React.Component {
+class InputPopup extends React.Component {
 
   constructor(props) {
     super(props);
@@ -63,4 +63,4 @@ class AsyncPopup extends React.Component {
   }
 }
 
-export default AsyncPopup;
+export default InputPopup;

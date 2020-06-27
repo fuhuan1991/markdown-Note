@@ -11,7 +11,8 @@ import {
 import { Layout, Menu } from 'antd';
 import { getMenu, createDir } from '../api/client';
 import { notify } from '../notification';
-import AsyncPopup from '../asyncPopup';
+import InputPopup from '../inputPopup';
+import DirModule from '../dirModule';
 import './style.scss';
 
 const { Sider } = Layout;
@@ -25,8 +26,13 @@ class App extends React.Component {
     this.state = {
       mode: 'mk',
       isSidebarCollapsed: true,
+      dirTable: null,
       renderedMenu: null,
       newFolderPopupVisible: false,
+      openNotebooks: [],
+      rootKey: null,
+      currentSelectedType: 'INIT',
+      currentSelectedId: null
     }
   }
 
@@ -36,12 +42,39 @@ class App extends React.Component {
 
   fetchMenuFromRear = () => {
     const res = getMenu();
-    res.then((data) => {
-      console.info('menu', data);
-      this.setState({renderedMenu: this.renderMenu(data, true)});
+    res.then((rootNode) => {
+      console.info('fetch Menu From Rear', rootNode);
+      const dirTable = this.generateDirTable(rootNode)
+      this.setState({
+        dirTable: dirTable,
+        renderedMenu: this.renderMenu(rootNode, true),
+        rootKey: rootNode.id,
+        // openNotebooks: [rootNode.id],
+      });
     }, (e) => {
       notify('error', 'failed to fetch your notebooks, please refresh');
     });
+  }
+
+  generateDirTable = (rootNode) => {
+    // console.log(rootNode)
+    const dirs = rootNode.children;
+    const dirTable = {};
+    dirTable[rootNode.id] = {
+      id: rootNode.id,
+      name: rootNode.name,
+      files: rootNode.children,
+      type: rootNode.type,
+    };
+    for (let dir of dirs) {
+      dirTable[dir.id] = {
+        id: dir.id,
+        name: dir.name,
+        files: dir.children,
+        fype: dir.type,
+      }
+    }
+    return dirTable;
   }
 
   // construct React menu components from JSON data
@@ -52,7 +85,7 @@ class App extends React.Component {
         <SubMenu 
           key={node.id} 
           icon={<FolderOutlined />} 
-          title={node.name}
+          title='Notebooks'
           onTitleClick={this.moveSideMenu.bind(this, false)}
           popupClassName='side-bar-popup'
         >
@@ -63,6 +96,7 @@ class App extends React.Component {
     } else if (node.type === 'FILE') {
       return <Item key={node.id} icon={<FileOutlined />}>{node.name}</Item>;
     } else {
+      // then the node type must be 'DIR'
       const children = node.children.map((child) => this.renderMenu(child, false));
       return (
         <SubMenu
@@ -83,11 +117,65 @@ class App extends React.Component {
     this.setState({ newFolderPopupVisible: visible });
   }
 
+  onItemSelect = ({ item, key, keyPath, selectedKeys, domEvent }) => {
+    if ('new_notebook') {
+      console.log('new notebook');
+      // noting need to be done, keep the state unchanged
+    } else {
+      console.log('note selected', item, key);
+      this.setState({
+        currentSelectedType: 'FILE',
+      });
+    }
+  }
+
+  onSubmenuOpen = (openKeys) => {
+    if (this.state.isSidebarCollapsed) return;
+    console.log('submenu selected', openKeys)
+
+    if (openKeys.length === 0) {
+      // Root has been deselected, hide all sub menus
+      this.setState({
+        openNotebooks: [],
+        currentSelectedId: this.state.rootKey,
+        currentSelectedType: 'DIR',
+      });
+    } else if (openKeys.length === 1) {
+      if (openKeys[0] !== this.state.rootKey) {
+        // Root has been deselected, hide all sub menus
+        this.setState({
+          openNotebooks: [],
+          currentSelectedId: this.state.rootKey,
+          currentSelectedType: 'DIR',
+        });
+      } else {
+        // Root has been selected, hide all sub menus
+        this.setState({
+          openNotebooks: [this.state.rootKey],
+          currentSelectedId: this.state.rootKey,
+          currentSelectedType: 'DIR',
+        });
+      }
+    } else {
+      // A directory has been selected
+      this.setState({
+        openNotebooks: [openKeys[0], openKeys[openKeys.length-1]],
+        currentSelectedId: openKeys[openKeys.length-1],
+        currentSelectedType: 'DIR',
+      });
+    }
+    
+  }
+
   render() {
-    // const sideBarStyle = this.state.isSidebarDeployed? 'side-bar deployed' : 'side-bar shrinked';
+
+    const { currentSelectedType } = this.state;
+
     return (
       <div className="App">
         <Layout>
+
+          {/* Menu */}
           <Sider 
             className="side-bar" 
             collapsible 
@@ -98,7 +186,12 @@ class App extends React.Component {
             trigger={<BackwardFilled className='forward-arrow icon-btn' style={{ fontSize: '3rem' }}/>}
             reverseArrow={true}
           >
-            <Menu defaultSelectedKeys={['1']} mode="inline">
+            <Menu
+             mode="inline" selectable={true}
+             onSelect={this.onItemSelect}
+             onOpenChange={this.onSubmenuOpen}
+             openKeys={this.state.openNotebooks}
+            >
               <Menu.Item key="new_notebook" icon={<FolderAddOutlined />} onClick={this.setNewFolderPopupVisible.bind(this, true)}>
                 New Note Book
               </Menu.Item>
@@ -111,13 +204,22 @@ class App extends React.Component {
               {this.state.renderedMenu}
             </Menu>
           </Sider>
-          <Layout className="site-layout">
-            <MkNote isSidebarDeployed={!this.state.isSidebarCollapsed} />
+
+          {/* Modules */}
+          <Layout className="site-layout module-frame">
+            {currentSelectedType === 'DIR' && 
+              <DirModule 
+                directory={this.state.dirTable[this.state.currentSelectedId]} 
+                updateFunction={this.fetchMenuFromRear}
+              />}
+            {currentSelectedType === 'FILE' && <MkNote isSidebarDeployed={!this.state.isSidebarCollapsed} />}
+            {currentSelectedType === 'INIT' && "Welcome!"}
           </Layout>
+
         </Layout>
 
         {/* popup */}
-        <AsyncPopup 
+        <InputPopup 
           visible={this.state.newFolderPopupVisible} 
           title="Create a new notebook."
           placeholder="Give a name for your new notebook"
