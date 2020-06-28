@@ -28,13 +28,16 @@ class DirModule extends React.Component {
     for (let child of children) {
       if (child.type === 'DIR') {
         arrD.push(
-          <div className="unit" key={child.id}>
+          <div 
+            className="unit" 
+            key={child.id}
+            onClick={this.props.onDirInspect.bind(this, child.id)}  
+          >
             <div>
               <FolderOpenTwoTone style={{fontSize: '50px'}} />
             </div>
             <div className="file-name">{child.name}</div>
             <div className="lower-buttons">
-              <Button type="primary" size="small" onClick={this.props.onDirInspect.bind(this, child.id)}>Inspect</Button>
               {this.renderRenameButton(renameDir.bind(this, child.id), child.name)}
             </div>
             {this.renderDeleteButton(this.onDelete.bind(this, child.id))}
@@ -62,7 +65,6 @@ class DirModule extends React.Component {
         <div 
           className="unit" 
           key="return" 
-          style={{cursor: 'pointer'}} 
           onClick={this.props.onDirInspect.bind(this, '00000000-0000-0000-0000-000000000000')}
         >
           <div>
