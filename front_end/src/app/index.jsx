@@ -152,13 +152,25 @@ class App extends React.Component {
           currentSelectedType: 'DIR',
         });
       } else {
-        // Root has been selected, hide all sub menus
-        this.setState({
-          openNotebooks: [this.state.rootKey],
-          selectedDirId: this.state.rootKey,
-          selectedNoteId: [],
-          currentSelectedType: 'DIR',
-        });
+        if (this.currentSelectedType === 'FILE') {
+          // a note is currently displayed. This operation means to inspect the parent directory of this note
+          this.setState({
+            // openNotebooks: should stay unchanged
+            // selectedDirId: should stay unchanged
+            selectedNoteId: [],
+            currentSelectedType: 'DIR',
+          });
+        } else {
+          // a directory is currently displayed. 
+          // We are here because we select the same directory in the submenu again or Root has been selected.
+          // This operation means to hide all sub menus and display the root.
+          this.setState({
+            openNotebooks: [this.state.rootKey],
+            selectedDirId: this.state.rootKey,
+            selectedNoteId: [],
+            currentSelectedType: 'DIR',
+          });
+        }
       }
     } else {
       // A directory has been selected

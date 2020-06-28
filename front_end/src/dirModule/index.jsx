@@ -3,6 +3,7 @@ import {
   FolderOpenTwoTone,
   FileTextTwoTone,
   DeleteOutlined,
+  RollbackOutlined
 } from '@ant-design/icons';
 import { Button, Popconfirm } from 'antd';
 import { notify } from '../notification';
@@ -20,7 +21,7 @@ class DirModule extends React.Component {
     }
   }
 
-  renderChildren = (children) => {
+  renderChildren = (children, dirId) => {
     const arrD = [];
     const arrN = [];
     children.sort((a, b) => ('' + a.name).localeCompare(b.name));
@@ -55,7 +56,23 @@ class DirModule extends React.Component {
         );
       }
     }
-    return [...arrD, ...arrN];
+    const arr = [...arrD, ...arrN];
+    if (dirId !== '00000000-0000-0000-0000-000000000000') {
+      arr.unshift( 
+        <div 
+          className="unit" 
+          key="return" 
+          style={{cursor: 'pointer'}} 
+          onClick={this.props.onDirInspect.bind(this, '00000000-0000-0000-0000-000000000000')}
+        >
+          <div>
+            <RollbackOutlined style={{fontSize: '50px', color: '#1790ff'}} />
+          </div>
+          <div className="file-name">Return</div>
+        </div>
+      );
+    }
+    return arr;
   }
 
   renderDeleteButton = (handleDelete) => {
@@ -97,8 +114,8 @@ class DirModule extends React.Component {
   render() {
     console.log('Directory', this.props.directory)     
     const dirName = this.props.directory.name;
-    // const dirId = this.props.directory.id;
-    const files = this.renderChildren(this.props.directory.files);
+    const dirId = this.props.directory.id;
+    const files = this.renderChildren(this.props.directory.files, dirId);
 
     return (
       <div className='dir-module'>
