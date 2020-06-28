@@ -8,7 +8,7 @@ class InputPopup extends React.Component {
     super(props);
     this.state = {
       confirmLoading: false,
-      value: null,
+      value: this.props.initialValue,
     }
   }
 
@@ -26,7 +26,7 @@ class InputPopup extends React.Component {
         this.setState({ confirmLoading: false });
         notify('success', res);
         this.handleCancel();
-        this.props.afterSuccess();
+        if (typeof this.props.afterSuccess === 'function') this.props.afterSuccess();
       }, 
       (e) => { 
         this.setState({ confirmLoading: false }); 

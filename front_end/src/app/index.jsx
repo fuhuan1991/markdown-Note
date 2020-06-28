@@ -32,7 +32,8 @@ class App extends React.Component {
       openNotebooks: [],
       rootKey: null,
       currentSelectedType: 'INIT',
-      currentSelectedId: null
+      selectedDirId: null,
+      selectedNoteId: null,
     }
   }
 
@@ -113,13 +114,13 @@ class App extends React.Component {
     this.setState({ isSidebarCollapsed: collapsed });
   };
 
-  setNewFolderPopupVisible = visible => {
+  setNewFolderPopupVisibility = visible => {
     this.setState({ newFolderPopupVisible: visible });
   }
 
   onItemSelect = ({ item, key, keyPath, selectedKeys, domEvent }) => {
-    if ('new_notebook') {
-      console.log('new notebook');
+    console.log("onItemSelect", item, key)
+    if (key === 'new_notebook') {
       // noting need to be done, keep the state unchanged
     } else {
       console.log('note selected', item, key);
@@ -137,7 +138,8 @@ class App extends React.Component {
       // Root has been deselected, hide all sub menus
       this.setState({
         openNotebooks: [],
-        currentSelectedId: this.state.rootKey,
+        selectedDirId: this.state.rootKey,
+        selectedNoteId: [],
         currentSelectedType: 'DIR',
       });
     } else if (openKeys.length === 1) {
@@ -145,14 +147,16 @@ class App extends React.Component {
         // Root has been deselected, hide all sub menus
         this.setState({
           openNotebooks: [],
-          currentSelectedId: this.state.rootKey,
+          selectedDirId: this.state.rootKey,
+          selectedNoteId: [],
           currentSelectedType: 'DIR',
         });
       } else {
         // Root has been selected, hide all sub menus
         this.setState({
           openNotebooks: [this.state.rootKey],
-          currentSelectedId: this.state.rootKey,
+          selectedDirId: this.state.rootKey,
+          selectedNoteId: [],
           currentSelectedType: 'DIR',
         });
       }
@@ -160,11 +164,19 @@ class App extends React.Component {
       // A directory has been selected
       this.setState({
         openNotebooks: [openKeys[0], openKeys[openKeys.length-1]],
-        currentSelectedId: openKeys[openKeys.length-1],
+        selectedDirId: openKeys[openKeys.length-1],
+        selectedNoteId: [],
         currentSelectedType: 'DIR',
       });
-    }
-    
+    } 
+  }
+
+  onDirInspect = (id) => {
+    this.setState({
+      openNotebooks: [this.state.rootKey, id],
+      selectedDirId: id,
+      currentSelectedType: 'DIR',
+    });
   }
 
   render() {
@@ -191,8 +203,9 @@ class App extends React.Component {
              onSelect={this.onItemSelect}
              onOpenChange={this.onSubmenuOpen}
              openKeys={this.state.openNotebooks}
+             selectedKeys={[this.state.selectedNoteId]}
             >
-              <Menu.Item key="new_notebook" icon={<FolderAddOutlined />} onClick={this.setNewFolderPopupVisible.bind(this, true)}>
+              <Menu.Item key="new_notebook" icon={<FolderAddOutlined />} onClick={this.setNewFolderPopupVisibility.bind(this, true)}>
                 New Note Book
               </Menu.Item>
               <Menu.Item key="new_note" icon={<FileAddOutlined/>}>
@@ -209,8 +222,9 @@ class App extends React.Component {
           <Layout className="site-layout module-frame">
             {currentSelectedType === 'DIR' && 
               <DirModule 
-                directory={this.state.dirTable[this.state.currentSelectedId]} 
+                directory={this.state.dirTable[this.state.selectedDirId]} 
                 updateFunction={this.fetchMenuFromRear}
+                onDirInspect={this.onDirInspect}
               />}
             {currentSelectedType === 'FILE' && <MkNote isSidebarDeployed={!this.state.isSidebarCollapsed} />}
             {currentSelectedType === 'INIT' && "Welcome!"}
@@ -223,7 +237,7 @@ class App extends React.Component {
           visible={this.state.newFolderPopupVisible} 
           title="Create a new notebook."
           placeholder="Give a name for your new notebook"
-          onCancel={this.setNewFolderPopupVisible.bind(this, false)}
+          onCancel={this.setNewFolderPopupVisibility.bind(this, false)}
           apiFunction={createDir}
           key={Math.random()}
           afterSuccess={this.fetchMenuFromRear}

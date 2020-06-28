@@ -59,6 +59,6 @@ permission was granted:
 # Todo list:
 ---
 
-1. rename dir
+1. file item in dir module
 2. user system`;
 export default startingText; 

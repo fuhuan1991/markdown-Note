@@ -64,3 +64,18 @@ export const deleteDir = (id) => fetch(baseUrl + `api/dir/delete/${id}`, {
 }, e => {
   return Promise.reject();
 });
+
+// rename a existing notebook(directory)
+export const renameDir = (id, data) => fetch(baseUrl + 'api/dir/update/', {
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  method: 'PUT',
+  body: JSON.stringify({ name: data.value, id: id }),
+})
+.then(checkStatus)
+.then(res => {
+  return "notebook updated";
+}, e => {
+  return Promise.reject();
+});
