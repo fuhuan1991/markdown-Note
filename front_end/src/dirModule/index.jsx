@@ -7,7 +7,7 @@ import {
 } from '@ant-design/icons';
 import { Button, Popconfirm } from 'antd';
 import { notify } from '../notification';
-import { deleteDir, renameDir } from '../api/client.js';
+import { deleteDir, deleteNote, renameDir, renameNote } from '../api/client.js';
 import InputPopupWrapper from '../inputPopup/InputPopupWrapper';
 
 import './style.scss';
@@ -28,33 +28,40 @@ class DirModule extends React.Component {
     for (let child of children) {
       if (child.type === 'DIR') {
         arrD.push(
-          <div 
-            className="unit" 
-            key={child.id}
-            onClick={this.props.onDirInspect.bind(this, child.id)}  
-          >
+          <div className="unit" key={child.id}>
             <div>
-              <FolderOpenTwoTone style={{fontSize: '50px'}} />
+              <FolderOpenTwoTone 
+                style={{fontSize: '50px'}} 
+                className="pointer"
+                onClick={this.props.onDirInspect.bind(this, child.id)}
+              />
             </div>
-            <div className="file-name">{child.name}</div>
+            <div 
+              className="file-name pointer"
+              onClick={this.props.onDirInspect.bind(this, child.id)}
+            >{child.name}</div>
             <div className="lower-buttons">
-              {this.renderRenameButton(renameDir.bind(this, child.id), child.name)}
+              {this.renderRenameButtonForNotebook(renameDir.bind(this, child.id), child.name)}
             </div>
-            {this.renderDeleteButton(this.onDelete.bind(this, child.id))}
+            {this.renderDeleteButtonForNotebook(this.onDirDelete.bind(this, child.id))}
           </div>
         );
       } else {
         arrN.push(
           <div className="unit" key={child.id}>
             <div>
-              <FileTextTwoTone style={{fontSize: '50px'}} twoToneColor="#ffd152"/>
+              <FileTextTwoTone 
+                style={{fontSize: '50px'}} 
+                className="pointer"
+                twoToneColor="#ffd152"/>
             </div>
-            <div className="file-name">{child.name}</div>
+            <div 
+              className="file-name pointer"
+            >{child.name}</div>
             <div className="lower-buttons">
-              <Button type="primary" size="small">Edit</Button>
-              {/* {this.renderRenameButton(renameDir.bind(this, child.id), child.name)} */}
+              {this.renderRenameButtonForNote(renameNote.bind(this, child.id), child.name)}
             </div>
-            {/* {this.renderDeleteButton(this.onDelete.bind(this, child.id))} */}
+            {this.renderDeleteButtonForNote(this.onNoteDelete.bind(this, child.id))}
           </div>
         );
       }
@@ -62,22 +69,25 @@ class DirModule extends React.Component {
     const arr = [...arrD, ...arrN];
     if (dirId !== '00000000-0000-0000-0000-000000000000') {
       arr.unshift( 
-        <div 
-          className="unit" 
-          key="return" 
-          onClick={this.props.onDirInspect.bind(this, '00000000-0000-0000-0000-000000000000')}
-        >
+        <div className="unit" key="return">
           <div>
-            <RollbackOutlined style={{fontSize: '50px', color: '#1790ff'}} />
+            <RollbackOutlined 
+              className="pointer" 
+              style={{fontSize: '50px', color: '#1790ff'}} 
+              onClick={this.props.onDirInspect.bind(this, '00000000-0000-0000-0000-000000000000')}
+            />
           </div>
-          <div className="file-name">Return</div>
+          <div 
+            className="file-name pointer"
+            onClick={this.props.onDirInspect.bind(this, '00000000-0000-0000-0000-000000000000')}
+          >Return</div>
         </div>
       );
     }
     return arr;
   }
 
-  renderDeleteButton = (handleDelete) => {
+  renderDeleteButtonForNotebook = (handleDelete) => {
     const content = (
       <Popconfirm title="Sure to delete this notebook?" onConfirm={handleDelete}>
         <Button 
@@ -88,14 +98,27 @@ class DirModule extends React.Component {
           <DeleteOutlined />
         </Button>
       </Popconfirm>);
-
     return content;
   }
 
-  renderRenameButton = (handleRename, oldName) => {
+  renderDeleteButtonForNote = (handleDelete) => {
+    const content = (
+      <Popconfirm title="Sure to delete this note?" onConfirm={handleDelete}>
+        <Button 
+          danger 
+          type="primary" 
+          size="small"
+        >
+          <DeleteOutlined />
+        </Button>
+      </Popconfirm>);
+    return content;
+  }
+
+  renderRenameButtonForNotebook = (handleRename, oldName) => {
     const content = (
       <InputPopupWrapper 
-        title="Rename note"
+        title="Rename notebook"
         placeholder="Give a new name for your notebook"
         initialValue={oldName}
         apiFunction={handleRename}
@@ -106,8 +129,29 @@ class DirModule extends React.Component {
     return content;
   }
 
-  onDelete = (id) => {
+  renderRenameButtonForNote = (handleRename, oldName) => {
+    const content = (
+      <InputPopupWrapper 
+        title="Rename note"
+        placeholder="Give a new name for your note"
+        initialValue={oldName}
+        apiFunction={handleRename}
+        afterSuccess={this.props.updateFunction}
+        content={<Button size="small">Rename</Button>}
+      />
+    ); 
+    return content;
+  }
+
+  onDirDelete = (id) => {
     deleteDir(id).then((msg) => {
+      this.props.updateFunction()
+      notify('success', msg);
+    });
+  }
+
+  onNoteDelete = (id) => {
+    deleteNote(id).then((msg) => {
       this.props.updateFunction()
       notify('success', msg);
     });

@@ -3,6 +3,10 @@
   height: 100%;
   display: flex;
 
+  .pointer {
+    cursor: pointer;
+  }
+
   .ant-layout.ant-layout-has-sider{
     width: 100%;
   }
