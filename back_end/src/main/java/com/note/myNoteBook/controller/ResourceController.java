@@ -113,41 +113,54 @@ public class ResourceController {
   }
 
   /**
-   * Update a directory.
+   * Update a directory. Only parent_id and name of a directory can be changed
    */
   @CrossOrigin
   @PutMapping(path = "dir/update")
-  public void updateDir (@Valid @RequestBody Dir dir) throws Exception{
+  public ResponseEntity<Response> updateDir (@Valid @RequestBody Dir newDir) throws Exception{
     System.out.println("----------------update dir-------------------");
-    System.out.println(dir);
+    System.out.println(newDir);
 
     try {
-      this.dirService.updateDir(dir);
+      Dir oldDir = this.dirService.getDirById(newDir.getId());
+      if (oldDir == null) throw new RuntimeException("This notebook does not exist");
+      newDir.setParent_id(newDir.getParent_id() == null ? oldDir.getParent_id() : newDir.getParent_id());
+      newDir.setName(newDir.getName() == null ? oldDir.getName() : newDir.getName());
+      this.dirService.updateDir(newDir);
+      return new ResponseEntity<>(new Response("directory updated"), null, HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
-      throw e;
+      return new ResponseEntity<>(new Response(e.getMessage()), null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   @CrossOrigin
   @PutMapping(path = "note/update")
-  public void updateNote (@Valid @RequestBody NoteModificationRequest request) throws Exception{
+  public ResponseEntity<Response> updateNote (@Valid @RequestBody NoteModificationRequest request) throws Exception{
     System.out.println("----------------update note-------------------");
     System.out.println(request);
 
-    String title = request.getTitle();
-    String text = request.getText();
-    UUID id = request.getId();
-    UUID parent_id = request.getParent_id();
-
-    Note n = this.noteService.getNoteById(id);
-    if (n == null) throw new RuntimeException("note does not exist");
-    n.setParent_id(parent_id);
-    n.setName(title);
-    this.noteService.updateNote(n);
-
-    Content c = new Content(n.getContent_id(), text);
-    this.contentService.updateContent(c);
+    try {
+      UUID id = request.getId();
+      Note oldNote = this.noteService.getNoteById(id);
+      if (oldNote == null) throw new RuntimeException("This note does not exist");
+      String title = request.getTitle();
+      String text = request.getText();
+      UUID parent_id = request.getParent_id();
+      if (text == null) {
+        if (title != null) oldNote.setName(title);
+        if (parent_id != null) oldNote.setParent_id(parent_id);
+        this.noteService.updateNote(oldNote);
+      } else {
+        // change the content
+        Content c = new Content(oldNote.getContent_id(), text);
+        this.contentService.updateContent(c);
+      }
+      return new ResponseEntity<>(new Response("Note updated"), null, HttpStatus.OK);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResponseEntity<>(new Response(e.getMessage()), null, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
@@ -156,7 +169,7 @@ public class ResourceController {
   @CrossOrigin
   @DeleteMapping(path = "dir/delete/{id}")
   public ResponseEntity<Response> deleteDir (@PathVariable("id") String id) throws Exception{
-    System.out.println("----------------update dir-------------------");
+    System.out.println("----------------delete dir-------------------");
     System.out.println(id);
     try {
       Dir d = this.dirService.getDirById(UUID.fromString(id));
@@ -172,7 +185,7 @@ public class ResourceController {
   @CrossOrigin
   @DeleteMapping(path = "note/delete/{id}")
   public ResponseEntity<Response> deleteNote (@PathVariable("id") String id) throws Exception{
-    System.out.println("----------------update note-------------------");
+    System.out.println("----------------delete note-------------------");
     System.out.println(id);
     try {
       Note n = this.noteService.getNoteById(UUID.fromString(id));
