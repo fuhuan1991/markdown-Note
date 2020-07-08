@@ -8,9 +8,7 @@ public class NoteModificationRequest {
 
   @NotNull
   private UUID id;
-  @NotNull
   private UUID parent_id;
-  @NotBlank
   private String title;
   private String text;
 
