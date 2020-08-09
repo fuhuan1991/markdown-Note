@@ -6,6 +6,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
+/**
+ * This class defines a note but with no real content. Is has a content_id field to link up with a content object
+ */
 public class Note {
 
   private UUID id;

@@ -1,5 +1,7 @@
 package com.note.myNoteBook;
-
+/**
+ * This class defines a response msg returned by back-end.
+ */
 public class Response {
   private String msg;
 

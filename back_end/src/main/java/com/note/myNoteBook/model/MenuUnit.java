@@ -4,6 +4,10 @@ import com.note.myNoteBook.MenuUnitType;
 
 import java.util.UUID;
 
+/**
+ * This class defines an basic element in directory structure(menu), returned as response for front-end
+ * It could be the root directory, other directories(note books) or a note file
+ */
 public class MenuUnit {
   private UUID id;
   private UUID parent_id;

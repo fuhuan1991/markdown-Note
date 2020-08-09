@@ -88,7 +88,7 @@ public class ResourceController {
     try {
       List<MenuUnit> result = new LinkedList<>();
       result.add(new MenuUnit(DirUtil.ROOT_DIR_ID, null, MenuUnitType.DIR, "Root"));
-
+      // get all directories
       List<Dir> dirList = this.dirService.getAllDir();
       if (dirList != null) {
         for (Dir d : dirList) {
@@ -96,7 +96,7 @@ public class ResourceController {
           result.add(unit);
         }
       }
-
+      // get all the note files
       List<Note> noteList = this.noteService.getAllNote();
       if (noteList != null) {
         for (Note n : noteList) {

@@ -1,7 +1,6 @@
 package com.note.myNoteBook.service;
 
 import com.note.myNoteBook.DirUtil;
-import com.note.myNoteBook.model.Dir;
 import com.note.myNoteBook.model.Note;
 import com.note.myNoteBook.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;

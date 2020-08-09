@@ -1,10 +1,11 @@
 package com.note.myNoteBook.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
+/**
+ * This class defines the practical content of a note file.
+ */
 public class Content {
 
   private UUID id;
