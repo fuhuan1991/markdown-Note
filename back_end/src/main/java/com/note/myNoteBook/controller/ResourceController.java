@@ -49,6 +49,9 @@ public class ResourceController {
     }
   }
 
+  /**
+   * Create a new note file.
+   */
   @CrossOrigin
   @PostMapping(path = "note/create")
   public void createNote (@Valid @RequestBody NoteCreationRequest request) throws Exception {

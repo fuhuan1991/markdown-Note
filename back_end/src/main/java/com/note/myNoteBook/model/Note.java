@@ -1,7 +1,6 @@
 package com.note.myNoteBook.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
