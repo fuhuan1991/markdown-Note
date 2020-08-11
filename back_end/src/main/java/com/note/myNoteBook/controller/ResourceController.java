@@ -85,7 +85,7 @@ public class ResourceController {
    * Read all directory records from DB, construct a JSON structure and then return it to user.
    */
   @CrossOrigin
-  @GetMapping(path = "dir/getMenu")
+  @GetMapping(path = "dir/getMenu/")
   public List<MenuUnit> getDirStructure () throws Exception{
     System.out.println("----------------get Directory Structure-------------------");
     try {
@@ -114,6 +114,32 @@ public class ResourceController {
       throw e;
     }
   }
+
+  /**
+   * Get the content of a note
+   */
+  @CrossOrigin
+  @GetMapping(path = "note/getContent/{id}")
+  public Content getNoteContent (@PathVariable String id) throws Exception{
+    System.out.println("----------------get Note Content-------------------");
+    try {
+      System.out.println(id);
+      UUID noteId = UUID.fromString(id);
+      Note note = this.noteService.getNoteById(noteId);
+      if (note == null) throw new RuntimeException("This note does not exist");
+      Content content = this.contentService.getContentById(note.getContent_id());
+      if (content == null) {
+        this.noteService.deleteNote(noteId);
+        throw new RuntimeException("This note does not exist");
+      }
+      content.setId(null);
+      return content;
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw e;
+    }
+  }
+
 
   /**
    * Update a directory. Only parent_id and name of a directory can be changed
@@ -151,11 +177,12 @@ public class ResourceController {
       String text = request.getText();
       UUID parent_id = request.getParent_id();
       if (text == null) {
+        // only change title or parent_id
         if (title != null) oldNote.setName(title);
         if (parent_id != null) oldNote.setParent_id(parent_id);
         this.noteService.updateNote(oldNote);
       } else {
-        // change the content
+        // only change the content
         Content c = new Content(oldNote.getContent_id(), text);
         this.contentService.updateContent(c);
       }

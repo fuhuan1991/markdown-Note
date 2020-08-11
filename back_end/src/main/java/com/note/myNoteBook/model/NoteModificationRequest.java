@@ -12,7 +12,7 @@ public class NoteModificationRequest {
   private String title;
   private String text;
 
-  public NoteModificationRequest(@NotNull UUID id, UUID parent_id, @NotBlank String title, String text) {
+  public NoteModificationRequest(@NotNull UUID id, UUID parent_id, String title, String text) {
     this.id = id;
     this.parent_id = parent_id;
     this.title = title;
