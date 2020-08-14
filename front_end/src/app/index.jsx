@@ -1,5 +1,4 @@
 import React from 'react';
-import MkNote from '../mkNote/index';
 import {
   BackwardFilled,
   FileAddOutlined,
@@ -9,10 +8,13 @@ import {
   FolderAddOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
-import { getMenu, createDir } from '../api/client';
+import { getMenu, createDir, updateNote, createNote } from '../api/client';
 import { notify } from '../notification';
 import InputPopup from '../inputPopup';
-import DirModule from '../dirModule';
+import Routes from './Routes';
+import { withRouter } from "react-router";
+import initialText from '../initialNote';
+
 import './style.scss';
 
 const { Sider } = Layout;
@@ -21,19 +23,20 @@ const Item = Menu.Item;
 
 class App extends React.Component {
 
+  rootKey = null;
+
   constructor(props) {
     super(props);
     this.state = {
-      mode: 'mk',
+      // mode: 'mk',
       isSidebarCollapsed: true,
-      dirTable: null,
-      renderedMenu: null,
+      nodeTable: null,
+      dirTable: null, // a hash table, with dir id as key and other dir info as the value
+      renderedMenu: null, // a list of React components
       newFolderPopupVisible: false,
+      newNotePopupVisible: false,
       openNotebooks: [],
-      rootKey: null,
-      currentSelectedType: 'INIT',
-      selectedDirId: null,
-      selectedNoteId: null,
+      ready: false,
     }
   }
 
@@ -43,14 +46,16 @@ class App extends React.Component {
 
   fetchMenuFromRear = () => {
     const res = getMenu();
-    res.then((rootNode) => {
-      console.info('fetch Menu From Rear', rootNode);
-      const dirTable = this.generateDirTable(rootNode)
+    res.then((o) => {
+      const { nodeTable, rootNode } = o;
+      console.info('fetch Menu From Rear', nodeTable, rootNode);
+      const dirTable = this.generateDirTable(rootNode);
+      this.rootKey = rootNode.id;
       this.setState({
+        ready: true,
+        nodeTable: nodeTable,
         dirTable: dirTable,
         renderedMenu: this.renderMenu(rootNode, true),
-        rootKey: rootNode.id,
-        // openNotebooks: [rootNode.id],
       });
     }, (e) => {
       notify('error', 'failed to fetch your notebooks, please refresh');
@@ -79,7 +84,10 @@ class App extends React.Component {
   }
 
   // construct React menu components from JSON data
-  renderMenu(node, isRoot) {
+  renderMenu = (node, isRoot) => {
+
+    const { history } = this.props;
+
     if (isRoot) {
       const children = node.children.map((child) => this.renderMenu(child, false));
       const content = (
@@ -87,7 +95,14 @@ class App extends React.Component {
           key={node.id} 
           icon={<FolderOutlined />} 
           title='Notebooks'
-          onTitleClick={this.moveSideMenu.bind(this, false)}
+          onTitleClick={() => {
+            const { isSidebarCollapsed } = this.state;
+            if (isSidebarCollapsed) {
+              this.moveSideMenu(false);
+            } else {
+              history.push(`/root`)
+            }
+          }}
           popupClassName='side-bar-popup'
         >
           {children}
@@ -104,6 +119,7 @@ class App extends React.Component {
           key={node.id}
           icon={<FolderOutlined />} 
           title={node.name}
+          onTitleClick={() => { history.push(`/dir/${node.id}`) }}
         >
           {children}
         </SubMenu>);
@@ -118,82 +134,81 @@ class App extends React.Component {
     this.setState({ newFolderPopupVisible: visible });
   }
 
+  setNewNotePopupVisibility = visible => {
+    this.setState({ newNotePopupVisible: visible });
+  }
+
+  // Event handler when a note file is selected in the menu
   onItemSelect = ({ item, key, keyPath, selectedKeys, domEvent }) => {
-    console.log("onItemSelect", item, key)
-    if (key === 'new_notebook') {
+    const { history } = this.props;
+
+    if (key === 'new_notebook' || key === 'new_note' || key === 'save') {
       // noting need to be done, keep the state unchanged
     } else {
-      console.log('note selected', item, key);
-      this.setState({
-        currentSelectedType: 'FILE',
-      });
+      // this.saveCurrent(true);
+      history.push(`/note/${key}`);
+    }
+  }
+  
+  saveCurrent = () => {
+
+    const { location } = this.props;
+    const doc = window.codeMirror.getDoc();
+    const isNotePage = location.pathname.indexOf('/note/') === 0;
+    const noteId = location.pathname.slice(6);
+
+    if (!isNotePage || !doc || !noteId || noteId.length < 1) return;
+
+    const text = doc.getValue();
+    updateNote(noteId, text).then(
+      (res) => {
+        notify('success', res);
+      },
+      () => {
+        notify('error', 'update failed, try again later');
+      }
+    );
+  }
+
+  getOpenKeys = (pathname) => {
+  
+    const { nodeTable } = this.state;
+    
+    if (pathname.indexOf('/root') === 0) {
+      return [this.rootKey];
+    } else if (pathname.indexOf('/dir/') === 0) {
+      // in a directory page
+      const dirId = pathname.slice(5);
+      return [this.rootKey, dirId];
+    } else if (pathname.indexOf('/note/') === 0) {
+      // in a note page
+      const noteId = pathname.slice(6);
+      const parentId = !!nodeTable[noteId] && nodeTable[noteId].parent_id;
+      return [this.rootKey, parentId];
+    } else {
+      // in other page
+      return [];
     }
   }
 
-  onSubmenuOpen = (openKeys) => {
-    if (this.state.isSidebarCollapsed) return;
-    console.log('submenu selected', openKeys)
-
-    if (openKeys.length === 0) {
-      // Root has been deselected, hide all sub menus
-      this.setState({
-        openNotebooks: [],
-        selectedDirId: this.state.rootKey,
-        selectedNoteId: [],
-        currentSelectedType: 'DIR',
-      });
-    } else if (openKeys.length === 1) {
-      if (openKeys[0] !== this.state.rootKey) {
-        // Root has been deselected, hide all sub menus
-        this.setState({
-          openNotebooks: [],
-          selectedDirId: this.state.rootKey,
-          selectedNoteId: [],
-          currentSelectedType: 'DIR',
-        });
-      } else {
-        if (this.currentSelectedType === 'FILE') {
-          // a note is currently displayed. This operation means to inspect the parent directory of this note
-          this.setState({
-            // openNotebooks: should stay unchanged
-            // selectedDirId: should stay unchanged
-            selectedNoteId: [],
-            currentSelectedType: 'DIR',
-          });
-        } else {
-          // a directory is currently displayed. 
-          // We are here because we select the same directory in the submenu again or Root has been selected.
-          // This operation means to hide all sub menus and display the root.
-          this.setState({
-            openNotebooks: [this.state.rootKey],
-            selectedDirId: this.state.rootKey,
-            selectedNoteId: [],
-            currentSelectedType: 'DIR',
-          });
-        }
-      }
+  getDirId = (pathname) => {
+    if (pathname === '/root') {
+      return this.rootKey;
+    } else if (pathname.indexOf('/dir/') === 0){
+      return pathname.slice(5);
     } else {
-      // A directory has been selected
-      this.setState({
-        openNotebooks: [openKeys[0], openKeys[openKeys.length-1]],
-        selectedDirId: openKeys[openKeys.length-1],
-        selectedNoteId: [],
-        currentSelectedType: 'DIR',
-      });
-    } 
-  }
-
-  onDirInspect = (id) => {
-    this.setState({
-      openNotebooks: [this.state.rootKey, id],
-      selectedDirId: id,
-      currentSelectedType: 'DIR',
-    });
+      return null;
+    }
   }
 
   render() {
 
-    const { currentSelectedType } = this.state;
+    const { isSidebarCollapsed, renderedMenu, dirTable, ready } = this.state;
+    const { location } = this.props;
+    const isNotePage = location.pathname.indexOf('/note/') === 0;
+    const noteId = !!isNotePage ? location.pathname.slice(6) : null;
+    const dirId = this.getDirId(location.pathname);
+    const openKeys = ready ? this.getOpenKeys(location.pathname) : [];
 
     return (
       <div className="App">
@@ -203,9 +218,8 @@ class App extends React.Component {
           <Sider 
             className="side-bar" 
             collapsible 
-            collapsed={this.state.isSidebarCollapsed} 
+            collapsed={isSidebarCollapsed} 
             onCollapse={this.moveSideMenu}
-            // collapsedWidth={60}
             width={240}
             trigger={<BackwardFilled className='forward-arrow icon-btn' style={{ fontSize: '3rem' }}/>}
             reverseArrow={true}
@@ -213,50 +227,58 @@ class App extends React.Component {
             <Menu
              mode="inline" selectable={true}
              onSelect={this.onItemSelect}
-             onOpenChange={this.onSubmenuOpen}
-             openKeys={this.state.openNotebooks}
-             selectedKeys={[this.state.selectedNoteId]}
+             openKeys={openKeys}
+             selectedKeys={[noteId]}
             >
               <Menu.Item key="new_notebook" icon={<FolderAddOutlined />} onClick={this.setNewFolderPopupVisibility.bind(this, true)}>
                 New Note Book
               </Menu.Item>
-              <Menu.Item key="new_note" icon={<FileAddOutlined/>}>
+              {!isNotePage && <Menu.Item key="new_note" icon={<FileAddOutlined/>} onClick={this.setNewNotePopupVisibility.bind(this, true)}>
                 New Note
-              </Menu.Item>
-              <Menu.Item key="save" icon={<SaveOutlined/>}>
+              </Menu.Item>}
+              {!!isNotePage && <Menu.Item key="save" icon={<SaveOutlined/>} onClick={this.saveCurrent}>
                 Save
-              </Menu.Item>
-              {this.state.renderedMenu}
+              </Menu.Item>}
+              {renderedMenu}
             </Menu>
           </Sider>
 
           {/* Modules */}
           <Layout className="site-layout module-frame">
-            {currentSelectedType === 'DIR' && 
-              <DirModule 
-                directory={this.state.dirTable[this.state.selectedDirId]} 
-                updateFunction={this.fetchMenuFromRear}
-                onDirInspect={this.onDirInspect}
-              />}
-            {currentSelectedType === 'FILE' && <MkNote isSidebarDeployed={!this.state.isSidebarCollapsed} />}
-            {currentSelectedType === 'INIT' && "Welcome!"}
+            {!!ready && 
+            <Routes
+              dirTable={dirTable}
+              rootKey={this.rootKey}
+              fetchMenuFromRear={this.fetchMenuFromRear}
+            />}
           </Layout>
-
         </Layout>
 
-        {/* popup */}
+        {/* popups */}
         <InputPopup 
           visible={this.state.newFolderPopupVisible} 
           title="Create a new notebook."
           placeholder="Give a name for your new notebook"
           onCancel={this.setNewFolderPopupVisibility.bind(this, false)}
-          apiFunction={createDir}
-          key={Math.random()}
+          callback={createDir}
+          async={true}
           afterSuccess={this.fetchMenuFromRear}
+          key={Math.random()}
+        />
+
+        <InputPopup 
+          visible={this.state.newNotePopupVisible} 
+          title="Create a new note."
+          placeholder="Give a name for your new note"
+          onCancel={this.setNewNotePopupVisibility.bind(this, false)}
+          callback={createNote.bind(this, initialText, dirId)}
+          async={true}
+          afterSuccess={this.fetchMenuFromRear}
+          key={Math.random()}
         />
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);

@@ -44,13 +44,14 @@
           height: 2rem;
           width: 2rem;
         }
-        margin-bottom: 20px;
+        margin-bottom: 14px;
       }
       li:hover{
         color: #ebac00;
       }
       .ant-menu-selected::after,.ant-menu-item-selected::after{
-        display: none;
+        // display: none;
+        border-right: 8px solid #ffd152;
       }
       .ant-menu-submenu-title:hover{
         color: #ebac00;
