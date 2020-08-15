@@ -2,6 +2,8 @@
     .mk-editor {
         width: 50%;
         position: relative;
+        transition: 0.2s;
+
         .top-bar {
             width: 100%;
             height: 32px;
@@ -13,7 +15,6 @@
             padding: 0px 0px 0px 6px;
             line-height: 32px;
             border-bottom: 1px solid #FFD152;
-            // overflow-x: auto;
             font-size: 16px;
     
             .option {
@@ -52,7 +53,30 @@
 
             .CodeMirror-scroll{
                 width: 100%;
+                overflow-x: hidden!important;
+                .CodeMirror-sizer{
+                    border-right-width: 10px!important;
+                }
+            }
+            ::-webkit-scrollbar {
+                width: 6px;
+                background-color: #343233;
+            }
+            ::-webkit-scrollbar-track {
+                background: #343233;
+                width: 6px;
+            }
+            ::-webkit-scrollbar-thumb {
+                background-color: #ffd152;
+                border-radius: 6px;
             }
         }
+    }
+    .mk-editor.shrink {
+        width: 0px;
+        overflow: hidden;
+    }
+    .mk-editor.expand {
+        width: 100%;
     }
 }

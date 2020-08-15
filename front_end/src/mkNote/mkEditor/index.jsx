@@ -2,8 +2,10 @@ import React from 'react';
 import CodeMirror from 'react-codemirror';
 import templetes from './templates.js';
 import { Menu, Dropdown } from 'antd';
-import startingText from './startingText';
 import 'codemirror/mode/markdown/markdown';
+import PropTypes from 'prop-types';
+import InputPopupWrapper from '../../inputPopup/InputPopupWrapper';
+
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/darcula.css'
 import './style.scss';
@@ -14,6 +16,7 @@ const options = {
   mode: 'markdown',
   theme: 'darcula',
   scrollbarStyle: 'null',
+  lineWrapping: true
 }
 
 class MkEditor extends React.Component {
@@ -31,16 +34,13 @@ class MkEditor extends React.Component {
   }
 
   componentDidMount = () => {
+    const { initialValue } = this.props;
     try {
       window.codeMirror = this.editorRef.current.getCodeMirror();
-      const last_text = window.localStorage.getItem('mkEditor_last_time');
+      // const last_text = window.localStorage.getItem('mkEditor_last_time');
       const doc = this.editorRef.current.getCodeMirror().getDoc();
-      if (last_text) {
-        doc.setValue(last_text);
-      } else { 
-        doc.setValue(startingText);
-      }
-      this.props.onChange(doc.getValue());
+      doc.setValue(initialValue)
+      this.onChange(doc.getValue());
     } catch(e) {
       console.log(e);
     }
@@ -56,9 +56,15 @@ class MkEditor extends React.Component {
     }
   }
 
-  handleInsert = ({ key }) => {
-    const text = templetes[key];
-    if (!!text) this.insertTextAtCursor(text);
+  handleInsert = ({ key }, data) => {
+    if (key === 'pic') {
+      this.insertTextAtCursor(`\n![alt text](${data.value})\n`);
+    } else if (key === 'link') {
+      this.insertTextAtCursor(`\n[text](${data.value})\n`);
+    } else {
+      const text = templetes[key];
+      if (!!text) this.insertTextAtCursor(text);
+    }
   };
 
   headingMenu = (
@@ -86,6 +92,9 @@ class MkEditor extends React.Component {
       <Menu.Item key="ul">
         Unordered list
       </Menu.Item>
+      <Menu.Item key="check">
+        Check list
+      </Menu.Item>
     </Menu>
   );
 
@@ -101,21 +110,17 @@ class MkEditor extends React.Component {
     this.setState({ fontSize: this.state.fontSize - 1});
   }
 
-  onFocusChange = (focus) => {
-    if (focus) return;
-    // when the editor loses focus, store the current value in local storage
-    try {
-      const doc = this.editorRef.current.getCodeMirror().getDoc();
-      const text = doc.getValue();
-      window.localStorage.setItem('mkEditor_last_time', text);;
-    } catch(e) {
-      console.log(e);
-    }
-  }
-
   render() {
+
+    const { shrink, expand } = this.props;
+    const { fontSize } = this.state;
+    let className = 'mk-editor';
+
+    if (shrink) className += ' shrink';
+    if (expand) className += ' expand';
+
     return(
-      <div className='mk-editor' style={{fontSize: this.state.fontSize + 'px'}}>
+      <div className={className} style={{fontSize: fontSize + 'px'}}>
         <div className='top-bar'>
           Insert:
           <Dropdown overlay={this.headingMenu} trigger={['click']}>
@@ -124,9 +129,24 @@ class MkEditor extends React.Component {
           <Dropdown overlay={this.listMenu} trigger={['click']}>
             <span className='option'>List</span>
           </Dropdown>
-          <span className='option' onClick={this.handleInsert.bind(this, {key: 'pic'})}>Picture</span>
-          <span className='option' onClick={this.handleInsert.bind(this, {key: 'link'})}>Link</span>
+          <InputPopupWrapper 
+            title="Insert picture"
+            placeholder="Paste the picture link here"
+            initialValue={''}
+            callback={this.handleInsert.bind(this, {key: 'pic'})}
+            async={false}
+            content={<span className='option'>Picture</span>}
+          />
+          <InputPopupWrapper 
+            title="Insert link"
+            placeholder="Paste the link here"
+            initialValue={''}
+            callback={this.handleInsert.bind(this, {key: 'link'})}
+            async={false}
+            content={<span className='option'>Link</span>}
+          />
           <span className='option' onClick={this.handleInsert.bind(this, {key: 'line'})}>Line</span>
+          <span className='option' onClick={this.handleInsert.bind(this, {key: 'table'})}>Table</span>
           <span className='gap'></span>
           Font size:
           <span className='option' onClick={this.incFontSize}>+</span>
@@ -137,13 +157,17 @@ class MkEditor extends React.Component {
           ref={this.editorRef}
           onChange={this.onChange}
           options={options} 
-          onFocusChange={this.onFocusChange}
         />
       </div>
     );
   }
-
 };
 
+MkEditor.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  initialValue: PropTypes.string.isRequired,
+  shrink: PropTypes.bool.isRequired,
+  expand: PropTypes.bool.isRequired,
+};
 
 export default MkEditor;
