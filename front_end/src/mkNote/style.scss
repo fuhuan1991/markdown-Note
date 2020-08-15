@@ -8,6 +8,24 @@
         width: 100%;
         height: 100%;
         transition: width 0.4s;
+        .ant-spin.ant-spin-spinning{
+            margin: auto;
+        }
+        .slider-bar {
+            position: absolute;
+            bottom: 20px;
+            left: calc(50% - 50px);
+            width: 100px;
+            padding: 2px 16px;
+            border-radius: 4px;
+            background-color: #000000;
+            opacity: 0.2;
+            transition: 0.2s;
+            z-index: 1000;
+        }
+        .slider-bar:hover {
+            opacity: 0.6;
+        }
     }
 }
 

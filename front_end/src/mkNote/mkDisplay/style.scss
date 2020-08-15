@@ -6,6 +6,7 @@
         font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
         line-height: 1.5em;
         box-sizing: border-box;
+        transition: 0.2s;
 
         pre {
             border: 1px solid #ccc;
@@ -66,6 +67,12 @@
             max-width: 90%;
             margin-left: 5%;
         }
-
+    }
+    .mk-display.shrink {
+        width: 0px;
+        padding: 0px;
+    }
+    .mk-display.expand {
+        width: 100%;
     }
 }
