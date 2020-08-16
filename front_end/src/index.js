@@ -7,7 +7,7 @@ import './index.scss';
 import 'antd/dist/antd.css'; 
 
 ReactDOM.render(
-  <Router>
+  <Router basename="/markdown-Note">
     <App />
   </Router>,
   document.getElementById('root')
