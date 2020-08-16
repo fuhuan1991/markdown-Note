@@ -1,0 +1,28 @@
+.module-frame {
+    background-color: #483F42;
+}
+.welcome {
+    
+    background-color: #483F42;
+    color: #FFD152;
+    padding: 24px;
+    font-family: serif;
+    font-size: 20px;
+
+    h1 {
+        font-size: 2em;
+        color: #FFD152;
+    }
+    h2{
+        color: #FFD152;
+    }
+    .line{
+        display: block;
+        height: 1px;
+        width: 50%;
+        background-color: #484848;
+        position: relative;
+        border: 0;
+        margin: .5em 0 1em;
+    }
+}
