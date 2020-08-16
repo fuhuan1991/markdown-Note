@@ -1,5 +1,5 @@
 export default function constructMenu (arr) {
-  const map = [];
+  const map = {};
   const queue = [];
   let root;
 

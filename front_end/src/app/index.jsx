@@ -2,10 +2,11 @@ import React from 'react';
 import {
   BackwardFilled,
   FileAddOutlined,
-  FileOutlined,
+  FileMarkdownOutlined,
   SaveOutlined,
   FolderOutlined,
   FolderAddOutlined,
+  HomeOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import { getMenu, createDir, updateNote, createNote } from '../api/client';
@@ -47,6 +48,10 @@ class App extends React.Component {
   fetchMenuFromRear = () => {
     const res = getMenu();
     res.then((o) => {
+      if (!o || typeof o !== 'object') {
+        notify('error', 'failed to fetch your notebooks, please refresh');
+        return;
+      }
       const { nodeTable, rootNode } = o;
       console.info('fetch Menu From Rear', nodeTable, rootNode);
       const dirTable = this.generateDirTable(rootNode);
@@ -109,8 +114,8 @@ class App extends React.Component {
         </SubMenu>
       );
       return content;
-    } else if (node.type === 'FILE') {
-      return <Item key={node.id} icon={<FileOutlined />}>{node.name}</Item>;
+    } else if (node.type === 'MKD') {
+      return <Item key={node.id} icon={<FileMarkdownOutlined />}>{node.name}</Item>;
     } else {
       // then the node type must be 'DIR'
       const children = node.children.map((child) => this.renderMenu(child, false));
@@ -144,6 +149,8 @@ class App extends React.Component {
 
     if (key === 'new_notebook' || key === 'new_note' || key === 'save') {
       // noting need to be done, keep the state unchanged
+    } else if (key === 'home') {
+      history.push(`/`);
     } else {
       // this.saveCurrent(true);
       history.push(`/note/${key}`);
@@ -206,6 +213,7 @@ class App extends React.Component {
     const { isSidebarCollapsed, renderedMenu, dirTable, ready } = this.state;
     const { location } = this.props;
     const isNotePage = location.pathname.indexOf('/note/') === 0;
+    const isDirPage = location.pathname.indexOf('/dir/') === 0 || location.pathname.indexOf('/root') === 0;
     const noteId = !!isNotePage ? location.pathname.slice(6) : null;
     const dirId = this.getDirId(location.pathname);
     const openKeys = ready ? this.getOpenKeys(location.pathname) : [];
@@ -230,10 +238,13 @@ class App extends React.Component {
              openKeys={openKeys}
              selectedKeys={[noteId]}
             >
+              <Menu.Item key="home" icon={<HomeOutlined />} >
+                Home
+              </Menu.Item>
               <Menu.Item key="new_notebook" icon={<FolderAddOutlined />} onClick={this.setNewFolderPopupVisibility.bind(this, true)}>
                 New Note Book
               </Menu.Item>
-              {!isNotePage && <Menu.Item key="new_note" icon={<FileAddOutlined/>} onClick={this.setNewNotePopupVisibility.bind(this, true)}>
+              {!!isDirPage && <Menu.Item key="new_note" icon={<FileAddOutlined/>} onClick={this.setNewNotePopupVisibility.bind(this, true)}>
                 New Note
               </Menu.Item>}
               {!!isNotePage && <Menu.Item key="save" icon={<SaveOutlined/>} onClick={this.saveCurrent}>
@@ -264,6 +275,7 @@ class App extends React.Component {
           async={true}
           afterSuccess={this.fetchMenuFromRear}
           key={Math.random()}
+          maxLength={50}
         />
 
         <InputPopup 
@@ -275,6 +287,7 @@ class App extends React.Component {
           async={true}
           afterSuccess={this.fetchMenuFromRear}
           key={Math.random()}
+          maxLength={50}
         />
       </div>
     );

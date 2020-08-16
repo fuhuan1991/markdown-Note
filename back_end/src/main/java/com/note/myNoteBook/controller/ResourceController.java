@@ -140,7 +140,6 @@ public class ResourceController {
     }
   }
 
-
   /**
    * Update a directory. Only parent_id and name of a directory can be changed
    */

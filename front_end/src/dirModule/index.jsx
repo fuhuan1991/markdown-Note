@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   FolderOpenTwoTone,
-  FileTextTwoTone,
+  FileMarkdownTwoTone,
   DeleteOutlined,
   RollbackOutlined
 } from '@ant-design/icons';
@@ -9,22 +9,20 @@ import { Button, Popconfirm } from 'antd';
 import { notify } from '../notification';
 import { deleteDir, deleteNote, renameDir, renameNote } from '../api/client.js';
 import InputPopupWrapper from '../inputPopup/InputPopupWrapper';
+import { withRouter } from "react-router";
+import PropTypes from 'prop-types';
 
 import './style.scss';
 
 class DirModule extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-
-    }
-  }
-
   renderChildren = (children, dirId) => {
+
+    const { history } = this.props;
     const arrD = [];
     const arrN = [];
-    children.sort((a, b) => ('' + a.name).localeCompare(b.name));
+
+    children.sort((a, b) => ('' + a.name).localeCompare('' + b.name));
     for (let child of children) {
       if (child.type === 'DIR') {
         arrD.push(
@@ -33,12 +31,12 @@ class DirModule extends React.Component {
               <FolderOpenTwoTone 
                 style={{fontSize: '50px'}} 
                 className="pointer"
-                onClick={this.props.onDirInspect.bind(this, child.id)}
+                onClick={() => { history.push(`/dir/${child.id}`); }}
               />
             </div>
             <div 
               className="file-name pointer"
-              onClick={this.props.onDirInspect.bind(this, child.id)}
+              onClick={() => {history.push(`/dir/${child.id}`); }}
             >{child.name}</div>
             <div className="lower-buttons">
               {this.renderRenameButtonForNotebook(renameDir.bind(this, child.id), child.name)}
@@ -50,13 +48,16 @@ class DirModule extends React.Component {
         arrN.push(
           <div className="unit" key={child.id}>
             <div>
-              <FileTextTwoTone 
+              <FileMarkdownTwoTone 
                 style={{fontSize: '50px'}} 
                 className="pointer"
-                twoToneColor="#ffd152"/>
+                twoToneColor="#ffd152"
+                onClick={() => { history.push(`/note/${child.id}`); }}
+              />
             </div>
             <div 
               className="file-name pointer"
+              onClick={() => { history.push(`/note/${child.id}`); }}
             >{child.name}</div>
             <div className="lower-buttons">
               {this.renderRenameButtonForNote(renameNote.bind(this, child.id), child.name)}
@@ -74,12 +75,12 @@ class DirModule extends React.Component {
             <RollbackOutlined 
               className="pointer" 
               style={{fontSize: '50px', color: '#1790ff'}} 
-              onClick={this.props.onDirInspect.bind(this, '00000000-0000-0000-0000-000000000000')}
+              onClick={ () => { history.push(`/root`)} }
             />
           </div>
           <div 
             className="file-name pointer"
-            onClick={this.props.onDirInspect.bind(this, '00000000-0000-0000-0000-000000000000')}
+            onClick={ () => { history.push(`/root`)} }
           >Return</div>
         </div>
       );
@@ -121,7 +122,8 @@ class DirModule extends React.Component {
         title="Rename notebook"
         placeholder="Give a new name for your notebook"
         initialValue={oldName}
-        apiFunction={handleRename}
+        callback={handleRename}
+        async={true}
         afterSuccess={this.props.updateFunction}
         content={<Button size="small">Rename</Button>}
       />
@@ -135,9 +137,11 @@ class DirModule extends React.Component {
         title="Rename note"
         placeholder="Give a new name for your note"
         initialValue={oldName}
-        apiFunction={handleRename}
+        callback={handleRename}
+        async={true}
         afterSuccess={this.props.updateFunction}
         content={<Button size="small">Rename</Button>}
+        maxLength={50}
       />
     ); 
     return content;
@@ -158,10 +162,11 @@ class DirModule extends React.Component {
   }
 
   render() {
-    console.log('Directory', this.props.directory)     
-    const dirName = this.props.directory.name;
-    const dirId = this.props.directory.id;
-    const files = this.renderChildren(this.props.directory.files, dirId);
+
+    const { directory } = this.props; 
+    const dirName = directory.name;
+    const dirId = directory.id;
+    const files = this.renderChildren(directory.files, dirId);
 
     return (
       <div className='dir-module'>
@@ -174,4 +179,9 @@ class DirModule extends React.Component {
   }
 }
 
-export default DirModule;
+DirModule.propTypes = {
+  directory: PropTypes.object.isRequired,
+  updateFunction: PropTypes.func.isRequired,
+};
+
+export default withRouter(DirModule);
