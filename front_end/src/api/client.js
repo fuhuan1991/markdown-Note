@@ -1,8 +1,6 @@
 import serverAPI from './serverStorage';
 import offlineAPI from './offlineStorage';
-
-
-const offline = true;
+import { offline } from '../config';
 
 let getMenu;
 let getContent;
@@ -14,7 +12,7 @@ let renameDir;
 let renameNote;
 let updateNote;
 
-if (offline) {
+if (!!offline) {
   getMenu = offlineAPI.getMenu;
   getContent = offlineAPI.getContent;
   createNote = offlineAPI.createNote;
