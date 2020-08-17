@@ -166,7 +166,7 @@ class DirModule extends React.Component {
     const { directory } = this.props; 
     const dirName = directory.name;
     const dirId = directory.id;
-    const files = this.renderChildren(directory.files, dirId);
+    const files = this.renderChildren(directory.children, dirId);
 
     return (
       <div className='dir-module'>

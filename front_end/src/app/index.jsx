@@ -29,15 +29,13 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // mode: 'mk',
       isSidebarCollapsed: true,
-      nodeTable: null,
-      dirTable: null, // a hash table, with dir id as key and other dir info as the value
+      nodeTable: null, // a hash table which contains all the menu nodes 
       renderedMenu: null, // a list of React components
       newFolderPopupVisible: false,
       newNotePopupVisible: false,
-      openNotebooks: [],
-      ready: false,
+      openNotebooks: [], // a list that contains the IDs of all opened folders
+      ready: false, // a flag indicates whether the menu data is ready to be displayed.
     }
   }
 
@@ -54,38 +52,15 @@ class App extends React.Component {
       }
       const { nodeTable, rootNode } = o;
       console.info('fetch Menu From Rear', nodeTable, rootNode);
-      const dirTable = this.generateDirTable(rootNode);
       this.rootKey = rootNode.id;
       this.setState({
         ready: true,
         nodeTable: nodeTable,
-        dirTable: dirTable,
         renderedMenu: this.renderMenu(rootNode, true),
       });
     }, (e) => {
       notify('error', 'failed to fetch your notebooks, please refresh');
     });
-  }
-
-  generateDirTable = (rootNode) => {
-    // console.log(rootNode)
-    const dirs = rootNode.children;
-    const dirTable = {};
-    dirTable[rootNode.id] = {
-      id: rootNode.id,
-      name: rootNode.name,
-      files: rootNode.children,
-      type: rootNode.type,
-    };
-    for (let dir of dirs) {
-      dirTable[dir.id] = {
-        id: dir.id,
-        name: dir.name,
-        files: dir.children,
-        fype: dir.type,
-      }
-    }
-    return dirTable;
   }
 
   // construct React menu components from JSON data
@@ -152,7 +127,6 @@ class App extends React.Component {
     } else if (key === 'home') {
       history.push(`/`);
     } else {
-      // this.saveCurrent(true);
       history.push(`/note/${key}`);
     }
   }
@@ -210,7 +184,7 @@ class App extends React.Component {
 
   render() {
 
-    const { isSidebarCollapsed, renderedMenu, dirTable, ready } = this.state;
+    const { isSidebarCollapsed, renderedMenu, ready, nodeTable } = this.state;
     const { location } = this.props;
     const isNotePage = location.pathname.indexOf('/note/') === 0;
     const isDirPage = location.pathname.indexOf('/dir/') === 0 || location.pathname.indexOf('/root') === 0;
@@ -258,7 +232,7 @@ class App extends React.Component {
           <Layout className="site-layout module-frame">
             {!!ready && 
             <Routes
-              dirTable={dirTable}
+              nodeTable={nodeTable}
               rootKey={this.rootKey}
               fetchMenuFromRear={this.fetchMenuFromRear}
             />}

@@ -15,7 +15,7 @@ const onRouteChange = (a,b) => {
 
 const Routes = (props) => {
 
-  const { dirTable, rootKey, fetchMenuFromRear } = props;
+  const { nodeTable, rootKey, fetchMenuFromRear } = props;
 
   return (
     <Switch>
@@ -24,13 +24,13 @@ const Routes = (props) => {
       </Route>
       <Route exact path="/root">
         <RootWrapper 
-          rootDir={!!dirTable ? dirTable[rootKey] : null} 
+          rootDir={!!nodeTable ? nodeTable[rootKey] : null} 
           updateFunction={fetchMenuFromRear}
         />
       </Route>
       <Route path="/dir/:id">
         <DirWrapper 
-          dirTable={dirTable}
+          nodeTable={nodeTable}
           updateFunction={fetchMenuFromRear}
         />
       </Route>
@@ -59,13 +59,13 @@ const RootWrapper = (props) => {
 const DirWrapper = (props) => {
 
   let { id } = useParams();
-  let { dirTable, updateFunction } = props;
+  let { nodeTable, updateFunction } = props;
 
-  if (!dirTable[id]) return <Redirect to='/root' />
+  if (!nodeTable[id]) return <Redirect to='/root' />
   
   return (
     <DirModule 
-      directory={dirTable[id]} 
+      directory={nodeTable[id]} 
       updateFunction={updateFunction}
     />
   );
