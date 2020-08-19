@@ -1,15 +1,29 @@
 .module-frame {
+    background-color: #f8f8f8;
     .dir-module {
         padding: 16px;
+
+        .title {
+            font-size: 32px;
+            font-family: sans-serif;
+            color: rgba(0, 0, 0, 0.65);
+        }
+
         .fileContainer {
-            padding: 8px;
+
             .unit {
                 display: inline-block;
-                width: 160px;
-                height: 110px;
-                overflow: hidden;
+                width: 150px;
+                height: 96px;
                 position: relative;
-                padding: 0px 6px;
+                padding: 12px 12px;
+                border-radius: 12px;
+
+                .icon-container {
+                    transition: 0.2s;
+                    width: 126px;
+                }
+
                 .file-name {
                     display: inline-block;
                     font-size: 18px;
@@ -17,27 +31,39 @@
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                    width: 130px;
+                    text-align: center;
                 }
-                .lower-buttons {
-                    .ant-btn-sm {
-                        opacity: 0;
-                        height: 24px;
-                        padding: 0px 4px;
-                        font-size: 14px;
-                        border-radius: 2px;
-                        margin-right: 6px;
-                        transition: 0.2s;
-                    }
+
+                .ant-btn-sm {
+                    opacity: 0;
+                    height: 24px;       
+                    font-size: 14px;
+                    border-top-left-radius: 6px;
+                    border-bottom-left-radius: 6px;
+                    border-top-right-radius: 0px;
+                    border-bottom-right-radius: 0px;
+                    transition: 0.2s;
+                    position: absolute;
+                    top: 12px;
+                    right: 0px;
+
                 }
+
                 .ant-btn-dangerous{
                     opacity: 0;
                     position: absolute;
-                    right: 36px;
-                    top: 10px;
+                    top: 40px;
+                    right: 0px;
                     transition: 0.2s;
                 }
             }
+
             .unit:hover{
+                background-color: #ebebeb;
+                .icon-container {
+                    width: 80px;
+                }
                 .ant-btn-sm {
                     opacity: 1;
                 }

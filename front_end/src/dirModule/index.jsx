@@ -2,7 +2,6 @@ import React from 'react';
 import {
   FolderOpenTwoTone,
   FileMarkdownTwoTone,
-  DeleteOutlined,
   RollbackOutlined
 } from '@ant-design/icons';
 import { Button, Popconfirm } from 'antd';
@@ -27,7 +26,7 @@ class DirModule extends React.Component {
       if (child.type === 'DIR') {
         arrD.push(
           <div className="unit" key={child.id}>
-            <div>
+            <div className='icon-container' style={{textAlign: 'center'}}>
               <FolderOpenTwoTone 
                 style={{fontSize: '50px'}} 
                 className="pointer"
@@ -38,16 +37,14 @@ class DirModule extends React.Component {
               className="file-name pointer"
               onClick={() => {history.push(`/dir/${child.id}`); }}
             >{child.name}</div>
-            <div className="lower-buttons">
               {this.renderRenameButtonForNotebook(renameDir.bind(this, child.id), child.name)}
-            </div>
-            {this.renderDeleteButtonForNotebook(this.onDirDelete.bind(this, child.id))}
+              {this.renderDeleteButtonForNotebook(this.onDirDelete.bind(this, child.id))}
           </div>
         );
       } else {
         arrN.push(
           <div className="unit" key={child.id}>
-            <div>
+            <div className='icon-container' style={{textAlign: 'center'}}>
               <FileMarkdownTwoTone 
                 style={{fontSize: '50px'}} 
                 className="pointer"
@@ -59,10 +56,8 @@ class DirModule extends React.Component {
               className="file-name pointer"
               onClick={() => { history.push(`/note/${child.id}`); }}
             >{child.name}</div>
-            <div className="lower-buttons">
               {this.renderRenameButtonForNote(renameNote.bind(this, child.id), child.name)}
-            </div>
-            {this.renderDeleteButtonForNote(this.onNoteDelete.bind(this, child.id))}
+              {this.renderDeleteButtonForNote(this.onNoteDelete.bind(this, child.id))}
           </div>
         );
       }
@@ -71,7 +66,7 @@ class DirModule extends React.Component {
     if (dirId !== '00000000-0000-0000-0000-000000000000') {
       arr.unshift( 
         <div className="unit" key="return">
-          <div>
+          <div style={{textAlign: 'center'}}>
             <RollbackOutlined 
               className="pointer" 
               style={{fontSize: '50px', color: '#1790ff'}} 
@@ -96,7 +91,7 @@ class DirModule extends React.Component {
           type="primary" 
           size="small"
         >
-          <DeleteOutlined />
+          Delete
         </Button>
       </Popconfirm>);
     return content;
@@ -110,7 +105,7 @@ class DirModule extends React.Component {
           type="primary" 
           size="small"
         >
-          <DeleteOutlined />
+          Delete
         </Button>
       </Popconfirm>);
     return content;
@@ -170,7 +165,7 @@ class DirModule extends React.Component {
 
     return (
       <div className='dir-module'>
-        <h1>Notebook: {dirName}</h1>
+        <h1 className='title'>{dirName}</h1>
         <div className="fileContainer">
           {files}
         </div>
