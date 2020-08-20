@@ -19,4 +19,4 @@ This is markdown editor. For now, this is only a front-end part of a online mark
 3. user system
 
 ## Try it
-https://fuhuan1991.github.io/markdown-Note/index.html
+https://fuhuan1991.github.io/markdown-Note
