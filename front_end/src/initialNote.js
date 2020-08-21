@@ -1,9 +1,14 @@
-const initialText = "## This is your new Markdown note\n" +
+const initialText = "\n" +
+"\n" +
+"<----- Save Button" +
+"\n" +
+"\n" +
+"### This is your new Markdown note\n" +
 "All the frequenly used Markdown syntax are supported. For more infor about the syntax, please check [here](https://www.markdownguide.org/basic-syntax/).\n" +
 "You can use insertion button on the top to insert Markdown code templetes or you can write whatever Markdown you like\n" +
 "<br><br>\n" +
 "\n" +
-"## Examples\n" +
+"### Examples\n" +
 "---------------\n" +
 "#### Bold&Italic:\n" +
 "\n" +
