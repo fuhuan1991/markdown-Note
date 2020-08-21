@@ -6,11 +6,16 @@ import {
   FolderOutlined,
   FolderAddOutlined,
 } from '@ant-design/icons';
+import {
+  NavLink
+} from "react-router-dom";
+
 
 const Welcome = () => {
   return (
     <div className='welcome'>
       <h1>Welcome to EasyMDE</h1>
+      <p>This is a markdown note application in which you can:</p>
       <ul>
         <li>Create & Manage notes</li>
         <li>Full Markdown syntax support</li>
@@ -36,6 +41,9 @@ const Welcome = () => {
           <li><FolderAddOutlined/> creates a new notebook.</li>
           <li><FileAddOutlined/> creates a new note file in current notebook.</li>
       </ul>
+      <p>
+        Click <NavLink to="/root">here</NavLink> to view your root directory.
+      </p>
       <br/>
 
       <h2>About Markdown</h2>

@@ -9,10 +9,6 @@ import MkNote from '../mkNote/index';
 import DirModule from '../dirModule';
 import Welcome from '../welcome';
 
-const onRouteChange = (a,b) => {
-  console.log(a,b)
-}
-
 const Routes = (props) => {
 
   const { nodeTable, rootKey, fetchMenuFromRear } = props;
@@ -34,7 +30,7 @@ const Routes = (props) => {
           updateFunction={fetchMenuFromRear}
         />
       </Route>
-      <Route path="/note/:id" onChange={onRouteChange}>
+      <Route path="/note/:id">
         <MkNoteWrapper />
       </Route>
       <Route>
