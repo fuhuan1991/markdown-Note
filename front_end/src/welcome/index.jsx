@@ -14,11 +14,11 @@ import {
 const Welcome = () => {
   return (
     <div className='welcome'>
-      <h1>Welcome to EasyMDE</h1>
-      <p>This is a markdown note application in which you can:</p>
+      <h1>Welcome to MD-Note</h1>
+      <p>Create your notes with Markdown</p>
       <ul>
-        <li>Create & Manage notes</li>
         <li>Full Markdown syntax support</li>
+        <li>Real time compilation and display</li>
         <li>No need for account</li>
         <li>Automatical saving</li>
       </ul>
@@ -26,7 +26,7 @@ const Welcome = () => {
 
       <h2>Local Storage</h2>
       <p>
-        EasyMDE stores your notes locally, which means all your files are accessible offline!
+        MD-Note stores your notes locally, which means all your files are accessible offline!
       </p>
       <br/>
       
