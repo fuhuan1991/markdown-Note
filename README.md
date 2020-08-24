@@ -1,6 +1,6 @@
 
 ## Intro
-This is a markdown editor. 
+This is a Markdown note application. 
 - You can create notes and notebooks(folders) in this application.
 - All the notes and folders will be saved in browser.
 - In edit mode, type markdown script on the left, the compiled result would appear on the right.
