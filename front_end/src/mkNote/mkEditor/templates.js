@@ -12,5 +12,6 @@ const templetes = {
             "| row-1 |       |       |       |       |       |\n" +
             "| row-2 |       |       |       |       |       |\n" +
             "| row-3 |       |       |       |       |       |\n",
+    br: '<br>'
 }
 export default templetes; 

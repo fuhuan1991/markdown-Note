@@ -5,6 +5,9 @@ import { Menu, Dropdown } from 'antd';
 import 'codemirror/mode/markdown/markdown';
 import PropTypes from 'prop-types';
 import InputPopupWrapper from '../../inputPopup/InputPopupWrapper';
+import {
+  EnterOutlined,
+} from '@ant-design/icons';
 
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/darcula.css'
@@ -147,6 +150,7 @@ class MkEditor extends React.Component {
           />
           <span className='option' onClick={this.handleInsert.bind(this, {key: 'line'})}>Line</span>
           <span className='option' onClick={this.handleInsert.bind(this, {key: 'table'})}>Table</span>
+          <span className='option' onClick={this.handleInsert.bind(this, {key: 'br'})}><EnterOutlined /></span>
           <span className='gap'></span>
           Font size:
           <span className='option' onClick={this.incFontSize}>+</span>
