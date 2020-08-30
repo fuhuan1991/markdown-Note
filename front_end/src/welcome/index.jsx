@@ -5,6 +5,7 @@ import {
   FileMarkdownOutlined,
   FolderOutlined,
   FolderAddOutlined,
+  GithubOutlined,
 } from '@ant-design/icons';
 import {
   NavLink
@@ -47,10 +48,12 @@ const Welcome = () => {
       <br/>
 
       <h2>About Markdown</h2>
-      <svg xmlns="http://www.w3.org/2000/svg" width="104" height="64" viewBox="0 0 208 128"><rect width="198" height="118" x="5" y="5" ry="10" stroke="#FFD152" strokeWidth="10" fill="none"/><path  fill="#FFD152" d="M30 98V30h20l20 25 20-25h20v68H90V59L70 84 50 59v39zm125 0l-30-33h20V30h20v35h20z"/><script xmlns=""/></svg>
-      <p>
-      Markdown is a lightweight markup language that you can use to add formatting elements to plaintext text documents. Created by John Gruber in 2004, Markdown is now one of the world’s most popular markup languages.
-      </p>
+      <div style={{display: "flex"}}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="104" height="64" viewBox="0 0 208 128"><rect width="198" height="118" x="5" y="5" ry="10" stroke="#FFD152" strokeWidth="10" fill="none"/><path  fill="#FFD152" d="M30 98V30h20l20 25 20-25h20v68H90V59L70 84 50 59v39zm125 0l-30-33h20V30h20v35h20z"/><script xmlns=""/></svg>
+        <p style={{marginLeft: '20px'}}>
+          Markdown is a lightweight markup language that you can use to add formatting elements to plaintext text documents. Created by John Gruber in 2004, Markdown is now one of the world’s most popular markup languages.
+        </p>
+      </div>
       <p>
       Markdown is a fast and easy way to take notes, create content for a website, and produce print-ready documents.
 It doesn’t take long to learn the Markdown syntax, and once you know how to use it, you can write using Markdown just about everywhere. Most people use Markdown to create content for the web, but Markdown is good for formatting everything from email messages to grocery lists.
@@ -58,6 +61,11 @@ It doesn’t take long to learn the Markdown syntax, and once you know how to us
       <br/>
 
       <h2>About me</h2>
+      <p><GithubOutlined />&nbsp;&nbsp;<NavLink to="/root">https://github.com/fuhuan1991</NavLink></p>
+      <p>
+        I'm Huan Fu, a Software Engineer with 2 years of developing experience of data platform and E-commerce web applications
+        Currently, I'm a master’s student in computer science at Tufts and am very passionate in applying programing skills to create better experience for users.
+      </p>
     </div>
   );
 }
