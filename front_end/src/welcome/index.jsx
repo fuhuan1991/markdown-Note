@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './style.scss';
 import {
   FileAddOutlined,
@@ -6,13 +6,26 @@ import {
   FolderOutlined,
   FolderAddOutlined,
   GithubOutlined,
+  WarningOutlined,
 } from '@ant-design/icons';
 import {
   NavLink
 } from "react-router-dom";
+import { resetDB } from "../api/client";
+import { Button, Popconfirm } from 'antd';
 
+const reset = () => {
+  resetDB();
+  console.log('data base deleted');
+  window.location.reload();
+}
 
 const Welcome = () => {
+
+  const [resetOpen, setResetOpen] = useState(false);
+
+  const coverClass = resetOpen ? "cover open" : "cover";
+
   return (
     <div className='welcome'>
       <h1>Welcome to MD-Note</h1>
@@ -30,6 +43,23 @@ const Welcome = () => {
         MD-Note stores your notes locally, which means all your files are accessible offline!
       </p>
       <br/>
+
+      <h2>Reset Local Data Base</h2>
+      <p>
+        You can reset your local database via this button.
+      </p>
+      <div style={{position: 'relative'}}>
+        <div 
+          className={coverClass} 
+          onClick={() => {setResetOpen(!resetOpen)}}
+        >
+          <WarningOutlined style={{ fontSize: '50px', color: '#FFD152' }}/>
+        </div>
+        <Popconfirm title="Sure to reset the database?" onConfirm={reset}>
+          <Button type="primary" danger>RESET</Button>
+        </Popconfirm>
+      </div>
+      <br/><br/><br/>
       
       <h2>Navigation</h2>
       <p>

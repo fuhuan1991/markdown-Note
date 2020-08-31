@@ -1,5 +1,5 @@
 import constructMenu from './constructMenuJSON';
-import { openDB } from 'idb';
+import { openDB, deleteDB } from 'idb';
 import {v4 as uuid} from 'uuid';
 
 let myDB = null;
@@ -9,6 +9,7 @@ const initialization = async () => {
   return await openDB('myDB', 1, {
     async upgrade(db, oldVersion, newVersion, transaction) {
       if (oldVersion === 0){
+        console.log('initializing DB')
         db.createObjectStore('dirs', {keyPath: 'id'});
         db.createObjectStore('notes', {keyPath: 'id'});
         db.createObjectStore('contents', {keyPath: 'id'});
@@ -237,6 +238,11 @@ const updateNote = async (id, text) => {
   }
 }
 
+const resetDB = () => {
+  console.log('1111')
+  return deleteDB('myDB');
+}
+
 export default {
   getMenu,
   getContent,
@@ -247,4 +253,5 @@ export default {
   renameDir,
   renameNote,
   updateNote,
+  resetDB,
 };

@@ -11,6 +11,7 @@ let deleteNote;
 let renameDir;
 let renameNote;
 let updateNote;
+let resetDB;
 
 if (!!offline) {
   getMenu = offlineAPI.getMenu;
@@ -22,6 +23,7 @@ if (!!offline) {
   renameDir = offlineAPI.renameDir;
   renameNote = offlineAPI.renameNote;
   updateNote = offlineAPI.updateNote;
+  resetDB = offlineAPI.resetDB;
 } else {
   getMenu = serverAPI.getMenu;
   getContent = serverAPI.getContent;
@@ -32,6 +34,7 @@ if (!!offline) {
   renameDir = serverAPI.renameDir;
   renameNote = serverAPI.renameNote;
   updateNote = serverAPI.updateNote;
+  resetDB = serverAPI.resetDB;
 }
 
 
@@ -44,6 +47,7 @@ export {
   deleteNote,
   renameDir,
   renameNote,
-  updateNote
+  updateNote,
+  resetDB,
 };
 

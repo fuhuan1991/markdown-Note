@@ -22,4 +22,30 @@
         border: 0;
         margin: .5em 0 1em;
     }
+    .cover {
+        background-color: #483F42;
+        border: 2px solid #FFD152;
+        padding: 6px 52px;
+        width: 162px;
+        height: 66px;
+        position: absolute;
+        left: 0px;
+        z-index: 1;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: 1.2s;
+    }
+    .cover.open {
+        left: 150px;
+    }
+    .ant-btn.ant-btn-primary.ant-btn-dangerous {
+        font-size: 18px;
+        font-weight: 900;
+        line-height: 32px;
+        padding: 0px 12px;
+        font-family: sans-serif;
+        top: 20px;
+        left: 34px;
+        box-shadow: 3px 2px 1px 0px black;
+    }
 }
