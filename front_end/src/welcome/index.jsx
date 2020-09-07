@@ -7,6 +7,7 @@ import {
   FolderAddOutlined,
   GithubOutlined,
   WarningOutlined,
+  SmileOutlined,
 } from '@ant-design/icons';
 import {
   NavLink
@@ -90,8 +91,12 @@ It doesn’t take long to learn the Markdown syntax, and once you know how to us
       </p>
       <br/>
 
-      <h2>About me</h2>
-      <p><GithubOutlined />&nbsp;&nbsp;<NavLink to="/root">https://github.com/fuhuan1991</NavLink></p>
+      <h2>About me 
+        &nbsp;
+        <a href="https://fuhuan1991.github.io" style={{color: "#FFD152"}}><SmileOutlined /></a>
+        &nbsp;
+        <a href="https://github.com/fuhuan1991" style={{color: "#FFD152"}}><GithubOutlined /></a>
+      </h2>
       <p>
         I'm Huan Fu, a Software Engineer with 2 years of developing experience of data platform and E-commerce web applications
         Currently, I'm a master’s student in computer science at Tufts and am very passionate in applying programing skills to create better experience for users.
