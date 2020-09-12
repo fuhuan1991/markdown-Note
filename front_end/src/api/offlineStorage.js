@@ -177,7 +177,7 @@ const getContent = async (noteId) => {
     const content = await myDB.get('contents', contentId);
     if (!content) throw new Error('note does not exist');
 
-    return {text: content.text};
+    return {text: content.text, title: note.name};
   } catch (e) {
     console.log(e);
     return Promise.reject('failed to get the content');
