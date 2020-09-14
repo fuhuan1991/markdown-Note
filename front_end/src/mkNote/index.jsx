@@ -8,6 +8,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { updateNote } from '../api/client';
 import { withRouter } from "react-router";
 import { notify } from '../notification';
+import { saveAs } from 'file-saver';
 
 import './style.scss';
 
@@ -22,12 +23,13 @@ class MkNote extends React.Component {
       ready: false,
       changed: false,
       sizeConfig: 1,
+      title: 'unknown',
     }
+    window.exportMD = this.exportMD;
   }
 
   componentDidMount() {
     const { noteId } = this.props;
-    // console.info("noteId", noteId)
     this.getNewContent(noteId);
   }
 
@@ -38,7 +40,6 @@ class MkNote extends React.Component {
     if (oldId !== noteId) {
       this.getNewContent(noteId);
     }
-
   }
 
   getNewContent = (noteId) => {
@@ -51,6 +52,7 @@ class MkNote extends React.Component {
           source: res.text,
           ready: true,
           changed: false,
+          title: res.title,
         });
       },
       () => {}
@@ -110,6 +112,11 @@ class MkNote extends React.Component {
 
   sizeChange = (v) => {
     this.setState({sizeConfig: v});
+  }
+
+  exportMD = () => {
+    const blob = new Blob([this.state.source], {type: "text/plain;charset=utf-8"});
+    saveAs(blob, this.state.title + ".md");
   }
 
   render() {
