@@ -127,7 +127,7 @@ const createNote = async (text, parent_id, data) => {
     // check name duplication
     const notes = await myDB.getAll('notes');
     for (const n of notes) {
-      if (n.name === title) return Promise.reject('name duplication');
+      if (n.name === title && n.parent_id === parent_id) return Promise.reject('name duplication');
     }
 
     const contextText = `# ${data.value} \n----\n` + text;
