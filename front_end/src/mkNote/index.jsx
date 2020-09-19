@@ -25,7 +25,6 @@ class MkNote extends React.Component {
       sizeConfig: 1,
       title: 'unknown',
     }
-    window.exportMD = this.exportMD;
   }
 
   componentDidMount() {
@@ -130,6 +129,7 @@ class MkNote extends React.Component {
           <>
             <MkEditor 
               onChange={this.onEditorChange}
+              exportMD={this.exportMD}
               initialValue={source} 
               shrink={sizeConfig === 0}
               expand={sizeConfig === 2}

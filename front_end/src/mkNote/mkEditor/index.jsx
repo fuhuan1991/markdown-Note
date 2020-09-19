@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import InputPopupWrapper from '../../inputPopup/InputPopupWrapper';
 import {
   EnterOutlined,
+  FontSizeOutlined,
 } from '@ant-design/icons';
 
 import 'codemirror/lib/codemirror.css';
@@ -115,7 +116,7 @@ class MkEditor extends React.Component {
 
   render() {
 
-    const { shrink, expand } = this.props;
+    const { shrink, expand, exportMD } = this.props;
     const { fontSize } = this.state;
     let className = 'mk-editor';
 
@@ -125,7 +126,9 @@ class MkEditor extends React.Component {
     return(
       <div className={className} style={{fontSize: fontSize + 'px'}}>
         <div className='top-bar'>
-          Insert:
+          <span className='option' onClick={() => {exportMD()}}>Export</span>
+          <span className='gap'></span>
+          Insert
           <Dropdown overlay={this.headingMenu} trigger={['click']}>
             <span className='option'>Heading</span>
           </Dropdown>
@@ -152,9 +155,9 @@ class MkEditor extends React.Component {
           <span className='option' onClick={this.handleInsert.bind(this, {key: 'table'})}>Table</span>
           <span className='option' onClick={this.handleInsert.bind(this, {key: 'br'})}><EnterOutlined /></span>
           <span className='gap'></span>
-          Font size:
+          <FontSizeOutlined style={{padding: '8px 6px 0px 0px'}}/>
           <span className='option' onClick={this.incFontSize}>+</span>
-          <span className='option' onClick={this.resetFontSize}>Reset</span>
+          <span className='option' onClick={this.resetFontSize}>Re</span>
           <span className='option' onClick={this.decFontSize}>-</span>
         </div>
         <CodeMirror 
@@ -169,6 +172,7 @@ class MkEditor extends React.Component {
 
 MkEditor.propTypes = {
   onChange: PropTypes.func.isRequired,
+  exportMD: PropTypes.func.isRequired,
   initialValue: PropTypes.string.isRequired,
   shrink: PropTypes.bool.isRequired,
   expand: PropTypes.bool.isRequired,
