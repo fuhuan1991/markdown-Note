@@ -54,7 +54,9 @@ class MkNote extends React.Component {
           title: res.title,
         });
       },
-      () => {}
+      () => {
+        this.props.history.push('/');
+      }
     );
   }
 
