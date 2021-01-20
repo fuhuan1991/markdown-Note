@@ -12,12 +12,14 @@ This is a Markdown note application.
 - React
 - Antd
 - Codemirror
-- IndexedDB 
+- AWS Amplify
+- AWS DynamoDB
+- AWS S3
 
 ## Todo
-- Deploy static content by Amplify
-- Setup REST API and DynamoDB
-- Setup S3 storage
+- [x] Deploy static content by Amplify
+- [ ] Setup REST API and DynamoDB
+- [ ] Setup S3 storage
 
 ## Try it
-https://fuhuan1991.github.io/markdown-Note
+https://master.d6ae8lnlxaf1m.amplifyapp.com/
