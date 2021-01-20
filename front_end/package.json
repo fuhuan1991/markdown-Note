@@ -31,10 +31,7 @@
     "clear_static": "rm -rf ../back_end/src/main/resources/static/*",
     "move_to_docs": "mv ./build/* ../docs/",
     "copy_to_docs": "cp -r ./build/* ../docs/",
-    "move_to_rear": "mv ./build/* ../back_end/src/main/resources/static/",
-    "build_D": "npm run build && npm run clear_docs && npm run move_to_docs",
-    "build_R": "npm run build && npm run clear_static && npm run move_to_rear",
-    "build_A": "npm run build && npm run clear_docs && npm run clear_static && npm run copy_to_docs && npm run move_to_rear",
+    "build_doc": "npm run build && npm run clear_docs && npm run move_to_docs",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -52,6 +49,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "homepage": "https://fuhuan1991.github.io/markdown-Note"
+  }
 }
