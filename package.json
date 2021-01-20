@@ -27,11 +27,6 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "clear_docs": "rm -rf ../docs/*",
-    "clear_static": "rm -rf ../back_end/src/main/resources/static/*",
-    "move_to_docs": "mv ./build/* ../docs/",
-    "copy_to_docs": "cp -r ./build/* ../docs/",
-    "build_doc": "npm run build && npm run clear_docs && npm run move_to_docs",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
