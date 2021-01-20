@@ -14,6 +14,10 @@ This is a Markdown note application.
 - Codemirror
 - IndexedDB 
 
+## Todo
+- Deploy static content by Amplify
+- Setup REST API and DynamoDB
+- Setup S3 storage
 
 ## Try it
 https://fuhuan1991.github.io/markdown-Note
