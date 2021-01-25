@@ -40,28 +40,28 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchMenuFromRear();
+    // this.fetchMenuFromRear();
   }
 
-  fetchMenuFromRear = () => {
-    const res = getMenu();
-    res.then((o) => {
-      if (!o || typeof o !== 'object') {
-        notify('error', 'failed to fetch your notebooks, please refresh');
-        return;
-      }
-      const { nodeTable, rootNode } = o;
-      console.info('fetch Menu From Rear', nodeTable, rootNode);
-      this.rootKey = rootNode.id;
-      this.setState({
-        ready: true,
-        nodeTable: nodeTable,
-        renderedMenu: this.renderMenu(rootNode, true),
-      });
-    }, (e) => {
-      notify('error', 'failed to fetch your notebooks, please refresh');
-    });
-  }
+  // fetchMenuFromRear = () => {
+  //   const res = getMenu();
+  //   res.then((o) => {
+  //     if (!o || typeof o !== 'object') {
+  //       notify('error', 'failed to fetch your notebooks, please refresh');
+  //       return;
+  //     }
+  //     const { nodeTable, rootNode } = o;
+  //     console.info('fetch Menu From Rear', nodeTable, rootNode);
+  //     this.rootKey = rootNode.id;
+  //     this.setState({
+  //       ready: true,
+  //       nodeTable: nodeTable,
+  //       renderedMenu: this.renderMenu(rootNode, true),
+  //     });
+  //   }, (e) => {
+  //     notify('error', 'failed to fetch your notebooks, please refresh');
+  //   });
+  // }
 
   // construct React menu components from JSON data
   renderMenu = (node, isRoot) => {
@@ -141,14 +141,14 @@ class App extends React.Component {
     if (!isNotePage || !doc || !noteId || noteId.length < 1) return;
 
     const text = doc.getValue();
-    updateNote(noteId, text).then(
-      (res) => {
-        notify('success', res);
-      },
-      () => {
-        notify('error', 'update failed, try again later');
-      }
-    );
+    // updateNote(noteId, text).then(
+    //   (res) => {
+    //     notify('success', res);
+    //   },
+    //   () => {
+    //     notify('error', 'update failed, try again later');
+    //   }
+    // );
   }
 
   getOpenKeys = (pathname) => {
@@ -206,7 +206,7 @@ class App extends React.Component {
             trigger={<BackwardFilled className='forward-arrow icon-btn' style={{ fontSize: '3rem' }}/>}
             reverseArrow={true}
           >
-            <Menu
+            {/* <Menu
              mode="inline" selectable={true}
              onSelect={this.onItemSelect}
              openKeys={openKeys}
@@ -225,22 +225,23 @@ class App extends React.Component {
                 Save
               </Menu.Item>}
               {renderedMenu}
-            </Menu>
+            </Menu> */}
           </Sider>
 
           {/* Modules */}
           <Layout className="site-layout module-frame">
-            {!!ready && 
+            {/* {!!ready && 
             <Routes
               nodeTable={nodeTable}
               rootKey={this.rootKey}
               fetchMenuFromRear={this.fetchMenuFromRear}
-            />}
+            />} */}
+            Welcome!
           </Layout>
         </Layout>
 
         {/* popups */}
-        <InputPopup 
+        {/* <InputPopup 
           visible={this.state.newFolderPopupVisible} 
           title="Create a new notebook."
           placeholder="Give a name for your new notebook"
@@ -250,9 +251,9 @@ class App extends React.Component {
           afterSuccess={this.fetchMenuFromRear}
           key={Math.random()}
           maxLength={50}
-        />
+        /> */}
 
-        <InputPopup 
+        {/* <InputPopup 
           visible={this.state.newNotePopupVisible} 
           title="Create a new note."
           placeholder="Give a name for your new note"
@@ -262,7 +263,7 @@ class App extends React.Component {
           afterSuccess={this.fetchMenuFromRear}
           key={Math.random()}
           maxLength={50}
-        />
+        /> */}
       </div>
     );
   }
