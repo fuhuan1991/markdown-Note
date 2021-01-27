@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React  from 'react';
 import './style.scss';
 import {
   FileAddOutlined,
@@ -6,61 +6,36 @@ import {
   FolderOutlined,
   FolderAddOutlined,
   GithubOutlined,
-  WarningOutlined,
   SmileOutlined,
+  UserOutlined
 } from '@ant-design/icons';
 import {
-  NavLink
+  NavLink,
+  useHistory
 } from "react-router-dom";
-import { resetDB } from "../api/client";
-import { Button, Popconfirm } from 'antd';
-
-const reset = () => {
-  resetDB();
-  console.log('data base deleted');
-  window.location.reload();
-}
+import { isSignedIn, getNickName } from '../sign/auth';
 
 const Welcome = () => {
 
-  const [resetOpen, setResetOpen] = useState(false);
+  const history = useHistory();
+  const signed = isSignedIn();
+  const nickname = getNickName();
 
-  const coverClass = resetOpen ? "cover open" : "cover";
+  if (!signed) {
+    history.push("/signin");
+  }
 
   return (
-    <div className='welcome'>
-      <h1>Welcome to MD-Note</h1>
-      <p>Create your notes with Markdown</p>
+    signed && <div className='welcome'>
+      <h1>Welcome to MD-Note, {nickname}</h1>
+
+      <h2>Create your notes with Markdown</h2>
       <ul>
         <li>Full Markdown syntax support</li>
         <li>Real time compilation and display</li>
-        <li>No need for account</li>
-        <li>Automatical saving</li>
+        <li>Auto saving</li>
       </ul>
       <br/>
-
-      <h2>Local Storage</h2>
-      <p>
-        MD-Note stores your notes locally, which means all your files are accessible offline!
-      </p>
-      <br/>
-
-      <h2>Reset Local Data Base</h2>
-      <p>
-        You can reset your local database via this button.
-      </p>
-      <div style={{position: 'relative'}}>
-        <div 
-          className={coverClass} 
-          onClick={() => {setResetOpen(!resetOpen)}}
-        >
-          <WarningOutlined style={{ fontSize: '50px', color: '#FFD152' }}/>
-        </div>
-        <Popconfirm title="Sure to reset the database?" onConfirm={reset}>
-          <Button type="primary" danger>RESET</Button>
-        </Popconfirm>
-      </div>
-      <br/><br/><br/>
       
       <h2>Navigation</h2>
       <p>
@@ -93,9 +68,9 @@ It doesn’t take long to learn the Markdown syntax, and once you know how to us
 
       <h2>About me 
         &nbsp;
-        <a href="https://fuhuan1991.github.io" style={{color: "#FFD152"}}><SmileOutlined /></a>
+        <a href="https://fuhuan1991.github.io"><UserOutlined /></a>
         &nbsp;
-        <a href="https://github.com/fuhuan1991" style={{color: "#FFD152"}}><GithubOutlined /></a>
+        <a href="https://github.com/fuhuan1991"><GithubOutlined /></a>
       </h2>
       <p>
         I'm Huan Fu, a Software Engineer with 2 years of developing experience of data platform and E-commerce web applications

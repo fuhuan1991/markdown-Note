@@ -1,0 +1,51 @@
+.sign-up, .confirm, .sign-in {
+    
+    background-color: #483F42;
+    color: #FFD152;
+    padding: 24px;
+    font-family: serif;
+    font-size: 20px;
+    height: 100%;
+
+    h1 {
+        font-size: 2em;
+        color: #FFD152;
+    }
+
+    h2{
+        color: #FFD152;
+    }
+
+    .container{
+        width: 600px;
+        margin-left: 24px;
+    }
+
+    .ant-form-item-label > label{
+        color: #FFD152;
+        font-size: 18px;
+    }
+
+    a {
+        text-decoration: underline;
+        color: #FFD152;
+    }
+
+    a:hover{
+        color: #ebac00;
+        text-decoration: underline;
+    }
+
+    .ant-btn{
+        color: #FFD152;
+        border-color: #FFD152;
+        background-color: transparent;
+    }
+
+    .ant-btn:hover{
+        color: #ebac00;
+        border-color: #ebac00;
+        background-color: transparent;
+    }
+}
+

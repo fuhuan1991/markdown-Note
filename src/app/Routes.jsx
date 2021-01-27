@@ -8,6 +8,9 @@ import {
 import MkNote from '../mkNote/index';
 import DirModule from '../dirModule';
 import Welcome from '../welcome';
+import SignUp from '../sign/SignUp';
+import Confirm from '../sign/Confirm';
+import SignIn from '../sign/SignIn';
 
 const Routes = (props) => {
 
@@ -16,23 +19,32 @@ const Routes = (props) => {
   return (
     <Switch>
       <Route exact path="/">
-        <Welcome/>
+        <Welcome />
       </Route>
-      <Route exact path="/root">
+      <Route exact path="/signin">
+        <SignIn />
+      </Route>
+      <Route exact path="/signup">
+        <SignUp />
+      </Route>
+      <Route exact path="/confirm">
+        <Confirm />
+      </Route>
+      {/* <Route exact path="/root">
         <RootWrapper 
           rootDir={!!nodeTable ? nodeTable[rootKey] : null} 
           updateFunction={fetchMenuFromRear}
         />
-      </Route>
-      <Route path="/dir/:id">
+      </Route> */}
+      {/* <Route path="/dir/:id">
         <DirWrapper 
           nodeTable={nodeTable}
           updateFunction={fetchMenuFromRear}
         />
-      </Route>
-      <Route path="/note/:id">
+      </Route> */}
+      {/* <Route path="/note/:id">
         <MkNoteWrapper />
-      </Route>
+      </Route> */}
       <Route>
         <Redirect to="/" />
       </Route>

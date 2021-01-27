@@ -6,6 +6,16 @@
     font-family: serif;
     font-size: 20px;
 
+    a {
+        text-decoration: underline;
+        color: #FFD152;
+    }
+
+    a:hover{
+        color: #ebac00;
+        text-decoration: underline;
+    }
+
     h1 {
         font-size: 2em;
         color: #FFD152;

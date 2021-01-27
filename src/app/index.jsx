@@ -15,6 +15,7 @@ import InputPopup from '../inputPopup';
 import Routes from './Routes';
 import { withRouter } from "react-router";
 import initialText from '../initialNote';
+import { isSignedIn } from '../sign/auth';
 
 import './style.scss';
 
@@ -191,13 +192,14 @@ class App extends React.Component {
     const noteId = !!isNotePage ? location.pathname.slice(6) : null;
     const dirId = this.getDirId(location.pathname);
     const openKeys = ready ? this.getOpenKeys(location.pathname) : [];
+    const signed = isSignedIn();
 
     return (
       <div className="App">
         <Layout>
 
           {/* Menu */}
-          <Sider 
+          {signed && <Sider 
             className="side-bar" 
             collapsible 
             collapsed={isSidebarCollapsed} 
@@ -226,17 +228,15 @@ class App extends React.Component {
               </Menu.Item>}
               {renderedMenu}
             </Menu> */}
-          </Sider>
+          </Sider>}
 
           {/* Modules */}
           <Layout className="site-layout module-frame">
-            {/* {!!ready && 
             <Routes
               nodeTable={nodeTable}
               rootKey={this.rootKey}
               fetchMenuFromRear={this.fetchMenuFromRear}
-            />} */}
-            Welcome!
+            />
           </Layout>
         </Layout>
 
