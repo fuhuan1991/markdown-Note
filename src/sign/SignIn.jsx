@@ -28,8 +28,9 @@ const onFinishFailed = (errorInfo) => {
 };
 
 
-const SignIn = () => {
+const SignIn = (props) => {
 
+  const fetchMenuFromRear = props.fetchMenuFromRear;
   const history = useHistory();
   let email = '';
 
@@ -38,7 +39,7 @@ const SignIn = () => {
   }
 
   const onFinish = (values) => {
-    signIn(values, history);
+    signIn(values, history, fetchMenuFromRear);
   };
 
   return (

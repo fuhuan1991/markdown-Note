@@ -14,8 +14,7 @@ import { notify } from '../notification';
 import InputPopup from '../inputPopup';
 import Routes from './Routes';
 import { withRouter } from "react-router";
-import initialText from '../initialNote';
-import { isSignedIn } from '../sign/auth';
+import { isSignedIn, getUserId } from '../sign/auth';
 
 import './style.scss';
 
@@ -36,33 +35,40 @@ class App extends React.Component {
       newFolderPopupVisible: false,
       newNotePopupVisible: false,
       openNotebooks: [], // a list that contains the IDs of all opened folders
-      ready: false, // a flag indicates whether the menu data is ready to be displayed.
+      menuReady: false, // a flag indicates whether the menu data is ready to be displayed.
     }
   }
 
   componentDidMount() {
-    // this.fetchMenuFromRear();
+    // console.log('--componentDidMount');
+    // console.log("isSignedIn", isSignedIn());
+    if (isSignedIn()) {
+      const userId = getUserId();
+      this.fetchMenuFromRear(userId);
+    }
   }
 
-  // fetchMenuFromRear = () => {
-  //   const res = getMenu();
-  //   res.then((o) => {
-  //     if (!o || typeof o !== 'object') {
-  //       notify('error', 'failed to fetch your notebooks, please refresh');
-  //       return;
-  //     }
-  //     const { nodeTable, rootNode } = o;
-  //     console.info('fetch Menu From Rear', nodeTable, rootNode);
-  //     this.rootKey = rootNode.id;
-  //     this.setState({
-  //       ready: true,
-  //       nodeTable: nodeTable,
-  //       renderedMenu: this.renderMenu(rootNode, true),
-  //     });
-  //   }, (e) => {
-  //     notify('error', 'failed to fetch your notebooks, please refresh');
-  //   });
-  // }
+  fetchMenuFromRear = (userId) => {
+
+    getMenu(userId).then((menuData) => {
+
+      if (!menuData || typeof menuData !== 'object') {
+        notify('error', 'failed to fetch your notebooks, please refresh');
+        return;
+      }
+
+      const { nodeTable, rootNode } = menuData;
+      console.info('fetch Menu From Rear', nodeTable, rootNode);
+      this.rootKey = rootNode.id;
+      this.setState({
+        menuReady: true,
+        nodeTable: nodeTable,
+        renderedMenu: this.renderMenu(rootNode, true),
+      });
+    }, (e) => {
+      notify('error', 'failed to fetch your notebooks, please refresh');
+    });
+  }
 
   // construct React menu components from JSON data
   renderMenu = (node, isRoot) => {
@@ -75,7 +81,7 @@ class App extends React.Component {
         <SubMenu 
           key={node.id} 
           icon={<FolderOutlined />} 
-          title='Notebooks'
+          title='Root'
           onTitleClick={() => {
             const { isSidebarCollapsed } = this.state;
             if (isSidebarCollapsed) {
@@ -90,7 +96,7 @@ class App extends React.Component {
         </SubMenu>
       );
       return content;
-    } else if (node.type === 'MKD') {
+    } else if (node.type === 'MD') {
       return <Item key={node.id} icon={<FileMarkdownOutlined />}>{node.name}</Item>;
     } else {
       // then the node type must be 'DIR'
@@ -142,14 +148,15 @@ class App extends React.Component {
     if (!isNotePage || !doc || !noteId || noteId.length < 1) return;
 
     const text = doc.getValue();
-    // updateNote(noteId, text).then(
-    //   (res) => {
-    //     notify('success', res);
-    //   },
-    //   () => {
-    //     notify('error', 'update failed, try again later');
-    //   }
-    // );
+
+    updateNote(noteId, text).then(
+      (res) => {
+        notify('success', res);
+      },
+      () => {
+        notify('error', 'update failed, try again later');
+      }
+    );
   }
 
   getOpenKeys = (pathname) => {
@@ -185,21 +192,23 @@ class App extends React.Component {
 
   render() {
 
-    const { isSidebarCollapsed, renderedMenu, ready, nodeTable } = this.state;
+    const { isSidebarCollapsed, renderedMenu, menuReady, nodeTable } = this.state;
     const { location } = this.props;
     const isNotePage = location.pathname.indexOf('/note/') === 0;
     const isDirPage = location.pathname.indexOf('/dir/') === 0 || location.pathname.indexOf('/root') === 0;
     const noteId = !!isNotePage ? location.pathname.slice(6) : null;
+    const openKeys = menuReady ? this.getOpenKeys(location.pathname) : [];
     const dirId = this.getDirId(location.pathname);
-    const openKeys = ready ? this.getOpenKeys(location.pathname) : [];
-    const signed = isSignedIn();
+    const userId = getUserId();
+
+    // console.log({renderedMenu, nodeTable, rootKey: this.rootKey})
 
     return (
       <div className="App">
         <Layout>
 
           {/* Menu */}
-          {signed && <Sider 
+          {menuReady && <Sider 
             className="side-bar" 
             collapsible 
             collapsed={isSidebarCollapsed} 
@@ -208,7 +217,7 @@ class App extends React.Component {
             trigger={<BackwardFilled className='forward-arrow icon-btn' style={{ fontSize: '3rem' }}/>}
             reverseArrow={true}
           >
-            {/* <Menu
+            <Menu
              mode="inline" selectable={true}
              onSelect={this.onItemSelect}
              openKeys={openKeys}
@@ -227,7 +236,7 @@ class App extends React.Component {
                 Save
               </Menu.Item>}
               {renderedMenu}
-            </Menu> */}
+            </Menu>
           </Sider>}
 
           {/* Modules */}
@@ -236,34 +245,35 @@ class App extends React.Component {
               nodeTable={nodeTable}
               rootKey={this.rootKey}
               fetchMenuFromRear={this.fetchMenuFromRear}
+              menuReady={menuReady}
             />
           </Layout>
         </Layout>
 
         {/* popups */}
-        {/* <InputPopup 
+        <InputPopup 
           visible={this.state.newFolderPopupVisible} 
           title="Create a new notebook."
           placeholder="Give a name for your new notebook"
           onCancel={this.setNewFolderPopupVisibility.bind(this, false)}
           callback={createDir}
           async={true}
-          afterSuccess={this.fetchMenuFromRear}
+          afterSuccess={this.fetchMenuFromRear.bind(this, userId)}
           key={Math.random()}
           maxLength={50}
-        /> */}
+        />
 
-        {/* <InputPopup 
+        <InputPopup 
           visible={this.state.newNotePopupVisible} 
           title="Create a new note."
           placeholder="Give a name for your new note"
           onCancel={this.setNewNotePopupVisibility.bind(this, false)}
-          callback={createNote.bind(this, initialText, dirId)}
+          callback={createNote.bind(this, dirId)}
           async={true}
-          afterSuccess={this.fetchMenuFromRear}
+          afterSuccess={this.fetchMenuFromRear.bind(this, userId)}
           key={Math.random()}
           maxLength={50}
-        /> */}
+        />
       </div>
     );
   }

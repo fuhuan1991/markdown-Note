@@ -42,7 +42,7 @@ class InputPopup extends React.Component {
           if (typeof afterSuccess === 'function') afterSuccess();
         }, 
         (e) => { 
-          notify('error', e)
+          notify('error', e);
           this.setState({ confirmLoading: false }); 
         }
       );

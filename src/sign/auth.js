@@ -19,8 +19,14 @@ function isSignedIn() {
 
 function getNickName() {
   const user = JSON.parse(window.localStorage.getItem('user'));
-  if (!user) return '';
+  if (!user) return null;
   return user.attributes.nickname;
+}
+
+function getUserId() {
+  const user = JSON.parse(window.localStorage.getItem('user'));
+  if (!user) return null;
+  return user.username;
 }
 
 function signUp(values, history) {
@@ -66,13 +72,14 @@ function confirm(values, history) {
   });
 }
 
-function signIn(values, history) {
+function signIn(values, history, fetchMenuFromRear) {
   const p = Auth.signIn(values.email, values.password);
   p.then((cognitoUser) => {
     notify('success', signInSuccTitle, '');
-    console.log(cognitoUser);
+    console.log({ cognitoUser });
     const str = JSON.stringify(cognitoUser);
     window.localStorage.setItem('user', str);
+    fetchMenuFromRear(cognitoUser.username);
     history.push('/welcome');
   },
   (result) => {
@@ -90,4 +97,5 @@ export {
   signUp,
   confirm,
   signIn,
+  getUserId,
 };

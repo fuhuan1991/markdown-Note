@@ -23,6 +23,11 @@
   .side-bar {
     background-color: #574b4f;
     position: relative;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
 
     .ant-layout-sider-children {
       overflow-y: auto;
@@ -35,7 +40,7 @@
     .ant-menu.ant-menu-root{
       width: 100%;
       background-color: transparent;
-      border-right: 1px solid #ffd152;
+      border-right: 1px solid transparent;
       padding-top: 20px;
       li {
         background-color: transparent;
@@ -72,6 +77,19 @@
     .forward-arrow.icon-btn {
       transform: rotate(180deg);
     }
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    background-color: #574b4f;
+  }
+  ::-webkit-scrollbar-track {
+      background: #574b4f;
+      width: 6px;
+  }
+  ::-webkit-scrollbar-thumb {
+      background-color: #ffd152;
+      border-radius: 6px;
   }
 }
 

@@ -17,11 +17,12 @@ class DirModule extends React.Component {
 
   renderChildren = (children, dirId) => {
 
-    const { history } = this.props;
+    const { history, isRoot} = this.props;
     const arrD = [];
     const arrN = [];
 
     children.sort((a, b) => ('' + a.name).localeCompare('' + b.name));
+
     for (let child of children) {
       if (child.type === 'DIR') {
         arrD.push(
@@ -62,8 +63,10 @@ class DirModule extends React.Component {
         );
       }
     }
+
     const arr = [...arrD, ...arrN];
-    if (dirId !== '00000000-0000-0000-0000-000000000000') {
+    
+    if (!isRoot) {
       arr.unshift( 
         <div className="unit" key="return">
           <div style={{textAlign: 'center'}}>
@@ -80,6 +83,7 @@ class DirModule extends React.Component {
         </div>
       );
     }
+
     return arr;
   }
 
@@ -143,16 +147,24 @@ class DirModule extends React.Component {
   }
 
   onDirDelete = (id) => {
-    deleteDir(id).then((msg) => {
+    deleteDir(id)
+    .then((msg) => {
       this.props.updateFunction()
       notify('success', msg);
+    }
+    ,(e) => {
+      notify('error', e);
     });
   }
 
   onNoteDelete = (id) => {
-    deleteNote(id).then((msg) => {
+    deleteNote(id)
+    .then((msg) => {
       this.props.updateFunction()
       notify('success', msg);
+    }
+    ,(e) => {
+      notify('error', e);
     });
   }
 
@@ -177,6 +189,7 @@ class DirModule extends React.Component {
 DirModule.propTypes = {
   directory: PropTypes.object.isRequired,
   updateFunction: PropTypes.func.isRequired,
+  isRoot: PropTypes.bool.isRequired,
 };
 
 export default withRouter(DirModule);

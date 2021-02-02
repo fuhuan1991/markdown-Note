@@ -11,10 +11,16 @@ import Welcome from '../welcome';
 import SignUp from '../sign/SignUp';
 import Confirm from '../sign/Confirm';
 import SignIn from '../sign/SignIn';
+import { isSignedIn } from '../sign/auth';
+import PropTypes from 'prop-types';
+import { getUserId } from '../sign/auth';
+
 
 const Routes = (props) => {
 
-  const { nodeTable, rootKey, fetchMenuFromRear } = props;
+  const { nodeTable, rootKey, fetchMenuFromRear, menuReady } = props;
+  const signed = isSignedIn();
+  const userId = getUserId();
 
   return (
     <Switch>
@@ -22,7 +28,7 @@ const Routes = (props) => {
         <Welcome />
       </Route>
       <Route exact path="/signin">
-        <SignIn />
+        <SignIn fetchMenuFromRear={fetchMenuFromRear}/>
       </Route>
       <Route exact path="/signup">
         <SignUp />
@@ -30,21 +36,30 @@ const Routes = (props) => {
       <Route exact path="/confirm">
         <Confirm />
       </Route>
-      {/* <Route exact path="/root">
-        <RootWrapper 
-          rootDir={!!nodeTable ? nodeTable[rootKey] : null} 
-          updateFunction={fetchMenuFromRear}
-        />
-      </Route> */}
-      {/* <Route path="/dir/:id">
-        <DirWrapper 
-          nodeTable={nodeTable}
-          updateFunction={fetchMenuFromRear}
-        />
-      </Route> */}
-      {/* <Route path="/note/:id">
-        <MkNoteWrapper />
-      </Route> */}
+      <Route exact path="/root">
+        {(!signed && <Redirect to="/signin" />)}
+        {
+          (signed && menuReady) &&
+            <RootWrapper 
+              rootDir={!!nodeTable ? nodeTable[rootKey] : null} 
+              updateFunction={fetchMenuFromRear.bind(this, userId)}
+            />
+        }
+      </Route>
+      <Route path="/dir/:id">
+        {(!signed && <Redirect to="/signin" />)}
+        {
+          (signed && menuReady) &&
+            <DirWrapper 
+              nodeTable={nodeTable}
+              updateFunction={fetchMenuFromRear.bind(this, userId)}
+            />
+        } 
+      </Route>
+      <Route path="/note/:id">
+        {(!signed && <Redirect to="/signin" />)}
+        {(signed && menuReady) && <MkNoteWrapper />}
+      </Route>
       <Route>
         <Redirect to="/" />
       </Route>
@@ -60,6 +75,7 @@ const RootWrapper = (props) => {
     <DirModule 
       directory={rootDir} 
       updateFunction={updateFunction}
+      isRoot={true}
     />
   );
 }
@@ -75,6 +91,7 @@ const DirWrapper = (props) => {
     <DirModule 
       directory={nodeTable[id]} 
       updateFunction={updateFunction}
+      isRoot={false}
     />
   );
 }
@@ -89,5 +106,12 @@ const MkNoteWrapper = () => {
     />
   );
 }
+
+Routes.propTypes = {
+  nodeTable: PropTypes.object,
+  rootKey: PropTypes.string,
+  fetchMenuFromRear: PropTypes.func.isRequired,
+  menuReady: PropTypes.bool.isRequired,
+};
 
 export default Routes;
