@@ -8,12 +8,12 @@ import {
 import MkNote from '../mkNote/index';
 import DirModule from '../dirModule';
 import Welcome from '../welcome';
-import SignUp from '../sign/SignUp';
-import Confirm from '../sign/Confirm';
-import SignIn from '../sign/SignIn';
-import { isSignedIn } from '../sign/auth';
+import SignUp from '../auth/SignUp';
+import Confirm from '../auth/Confirm';
+import SignIn from '../auth/SignIn';
+import { isSignedIn } from '../auth/util';
 import PropTypes from 'prop-types';
-import { getUserId } from '../sign/auth';
+import { getUserId } from '../auth/util';
 
 
 const Routes = (props) => {

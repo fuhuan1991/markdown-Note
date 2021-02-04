@@ -5,7 +5,7 @@ import {
   useHistory
 } from "react-router-dom";
 import { Form, Input, Button } from 'antd';
-import { confirm } from './auth';
+import { confirm } from './util';
 import {
   PlayCircleOutlined,
 } from '@ant-design/icons';

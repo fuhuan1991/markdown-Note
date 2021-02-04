@@ -7,7 +7,7 @@ class MkDisplay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fontSize: 16, 
+      fontSize: 20, 
     }
   }
 

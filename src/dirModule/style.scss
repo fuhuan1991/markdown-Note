@@ -14,10 +14,11 @@
             .unit {
                 display: inline-block;
                 width: 150px;
-                height: 96px;
+                height: 124px;
                 position: relative;
-                padding: 12px 12px;
+                padding: 6px 6px;
                 border-radius: 12px;
+                vertical-align:top;
 
                 .icon-container {
                     transition: 0.2s;
@@ -26,13 +27,14 @@
 
                 .file-name {
                     display: inline-block;
-                    font-size: 18px;
+                    font-size: 16px;
                     font-weight: 500;
-                    white-space: nowrap;
                     overflow: hidden;
-                    text-overflow: ellipsis;
                     width: 130px;
+                    height: 66px;
                     text-align: center;
+                    line-height: 20px;
+                    padding-top: 6px;
                 }
 
                 .ant-btn-sm {

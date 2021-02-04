@@ -2,7 +2,7 @@ import React  from 'react';
 import './style.scss';
 import { Form, Input, Button } from 'antd';
 import { useHistory, NavLink } from "react-router-dom";
-import { signUp } from './auth';
+import { signUp } from './util';
 import {
   PlayCircleOutlined,
 } from '@ant-design/icons';

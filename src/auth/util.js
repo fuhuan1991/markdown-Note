@@ -91,6 +91,11 @@ function signIn(values, history, fetchMenuFromRear) {
   });
 }
 
+function logout() {
+  window.localStorage.clear();
+  window.location.reload();
+}
+
 export {
   isSignedIn,
   getNickName,
@@ -98,4 +103,5 @@ export {
   confirm,
   signIn,
   getUserId,
+  logout,
 };

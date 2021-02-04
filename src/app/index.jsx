@@ -7,14 +7,15 @@ import {
   FolderOutlined,
   FolderAddOutlined,
   HomeOutlined,
+  ExportOutlined
 } from '@ant-design/icons';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Modal } from 'antd';
 import { getMenu, createDir, updateNote, createNote } from '../api/client';
 import { notify } from '../notification';
 import InputPopup from '../inputPopup';
 import Routes from './Routes';
 import { withRouter } from "react-router";
-import { isSignedIn, getUserId } from '../sign/auth';
+import { isSignedIn, getUserId, logout } from '../auth/util';
 
 import './style.scss';
 
@@ -34,6 +35,7 @@ class App extends React.Component {
       renderedMenu: null, // a list of React components
       newFolderPopupVisible: false,
       newNotePopupVisible: false,
+      logoutPopupVisible: false,
       openNotebooks: [], // a list that contains the IDs of all opened folders
       menuReady: false, // a flag indicates whether the menu data is ready to be displayed.
     }
@@ -125,11 +127,15 @@ class App extends React.Component {
     this.setState({ newNotePopupVisible: visible });
   }
 
+  setLogoutPopupVisibility = visible => {
+    this.setState({ logoutPopupVisible: visible });
+  }
+  
   // Event handler when a note file is selected in the menu
   onItemSelect = ({ item, key, keyPath, selectedKeys, domEvent }) => {
     const { history } = this.props;
 
-    if (key === 'new_notebook' || key === 'new_note' || key === 'save') {
+    if (key === 'new_notebook' || key === 'new_note' || key === 'save' || key === 'logout') {
       // noting need to be done, keep the state unchanged
     } else if (key === 'home') {
       history.push(`/`);
@@ -235,6 +241,9 @@ class App extends React.Component {
               {!!isNotePage && <Menu.Item key="save" icon={<SaveOutlined/>} onClick={this.saveCurrent}>
                 Save
               </Menu.Item>}
+              <Menu.Item key="logout" icon={<ExportOutlined />} onClick={this.setLogoutPopupVisibility.bind(this, true)}>
+                Log out
+              </Menu.Item>
               {renderedMenu}
             </Menu>
           </Sider>}
@@ -274,6 +283,15 @@ class App extends React.Component {
           key={Math.random()}
           maxLength={50}
         />
+
+        <Modal 
+          title="Logout" 
+          visible={this.state.logoutPopupVisible} 
+          onOk={logout} 
+          onCancel={this.setLogoutPopupVisibility.bind(this, false)}
+        >
+          Do you want to log out?
+        </Modal>
       </div>
     );
   }
