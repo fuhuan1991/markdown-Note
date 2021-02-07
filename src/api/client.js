@@ -3,6 +3,8 @@ import { baseUrl } from '../config';
 import constructMenuData from './constructMenuData';
 import { getUserId } from '../auth/util';
 
+console.log('baseUrl: ' + baseUrl);
+
 const checkStatus = response => {
   if (response.ok) {
     return response;

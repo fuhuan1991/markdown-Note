@@ -69,6 +69,7 @@ class App extends React.Component {
       });
     }, (e) => {
       notify('error', 'failed to fetch your notebooks, please refresh');
+      logout();
     });
   }
 
