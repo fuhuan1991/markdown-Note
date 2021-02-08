@@ -1,9 +1,9 @@
 var express = require('express');
+var cors = require('cors');
+
 var app = express();
-
-//setting middleware
+app.use(cors());
 app.use(express.static('./build')); //Serves resources from public folder
-
 
 var server = app.listen(8080);
 
