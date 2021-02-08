@@ -6,7 +6,6 @@ import {
   FolderOutlined,
   FolderAddOutlined,
   GithubOutlined,
-  SmileOutlined,
   UserOutlined
 } from '@ant-design/icons';
 import {
