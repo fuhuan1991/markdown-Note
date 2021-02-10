@@ -5,6 +5,7 @@
     padding: 24px;
     font-family: serif;
     font-size: 20px;
+    position: relative;
 
     a {
         text-decoration: underline;
@@ -57,5 +58,12 @@
         top: 20px;
         left: 34px;
         box-shadow: 3px 2px 1px 0px black;
+    }
+
+    .book-picture {
+        position: absolute;
+        width: 380px;
+        top: 60px;
+        left: 800px;
     }
 }

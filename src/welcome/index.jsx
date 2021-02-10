@@ -13,6 +13,7 @@ import {
   useHistory
 } from "react-router-dom";
 import { isSignedIn, getNickName } from '../auth/util';
+import book from '../img/book.png';
 
 const Welcome = () => {
 
@@ -28,21 +29,24 @@ const Welcome = () => {
     signed && <div className='welcome'>
       <h1>Welcome to MD-Note, {nickname}</h1>
 
-      <h2>Create your notes with Markdown</h2>
+      <h2>This is an Application that you can create and manage notes</h2>
       <ul>
-        <li>Full Markdown syntax support</li>
-        <li>Real time compilation and display</li>
+        <li>Full Markdown syntax support & Real time compilation/display</li>
+        <li>You can keep mutiple notebooks(folders), each of them can hold mutiple notes(files).</li>
+        <li>A note can be stored in either a notebook or in root directory.</li>
+        <li>Currently, you cannot store a notebook in another notebook</li>
+        <li>Initially, you have a few notebooks and a few notes in them.</li>
         <li>Auto saving</li>
       </ul>
       <br/>
+      <img className="book-picture" src={book} alt='cannot be displayed due to network reasons'></img>
       
       <h2>Navigation</h2>
       <p>
-        You can keep mutiple notebooks(folders), each of them can hold mutiple notes(files). 
         Use the Menu on left side for navigation. 
       </p>
       <ul>
-          <li><FolderOutlined/> directs you to a notebook view which allows you manage everything in it.</li>
+          <li><FolderOutlined/> directs you to a notebook view which allows you to manage everything in it.</li>
           <li><FileMarkdownOutlined/> directs you to a note editor.</li>
           <li><FolderAddOutlined/> creates a new notebook.</li>
           <li><FileAddOutlined/> creates a new note file in current notebook.</li>
