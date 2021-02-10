@@ -18,8 +18,8 @@ This is a Markdown note application.
 
 ## Todo
 - [x] Deploy static content by Amplify
-- [ ] Setup REST API and DynamoDB
+- [x] Setup REST API and DynamoDB
 - [ ] Setup S3 storage
 
 ## Try it
-https://master.d6ae8lnlxaf1m.amplifyapp.com/
+http://ec2-107-21-147-203.compute-1.amazonaws.com
