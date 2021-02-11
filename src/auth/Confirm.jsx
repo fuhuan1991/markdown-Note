@@ -78,7 +78,7 @@ const Confirm = () => {
             <Button type="primary" htmlType="submit">Submit<PlayCircleOutlined /></Button>
           </Form.Item>
         </Form>
-        <NavLink to="/signin">Sign in</NavLink>
+        <NavLink to="/signin">Sign in</NavLink>&nbsp;&nbsp;&nbsp;
         <NavLink to="/signup">Sign up</NavLink>
       </div>
     </div>
