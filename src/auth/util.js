@@ -1,5 +1,8 @@
 import { Auth } from 'aws-amplify';
 import { notify } from '../notification';
+import fetch from 'unfetch';
+import { baseUrl } from '../config';
+
 
 const auth = {};
 window.auth = auth;
@@ -43,6 +46,7 @@ function signUp(values, history) {
     notify('success', signUpSuccTitle, signUpSuccMsg);
     console.log(result);
     window.auth.unConfirmedUser = result.user;
+    window.auth.unConfirmedUser.userId = result.userSub;
     history.push('/confirm');
   }, 
   (result) => {
@@ -56,11 +60,13 @@ function signUp(values, history) {
 
 function confirm(values, history) {
   const p = Auth.confirmSignUp(values.email, values.code);
-  p.then((result) => {
+  p.then(async (result) => {
     notify('success', confirmSuccTitle, '');
     console.log(result);
     window.auth.user = window.auth.unConfirmedUser;
     delete window.auth.unConfirmedUser;
+    await initialize(window.auth.user);
+    console.log("initialize completed!");
     history.push('/signin');
   }, 
   (result) => {
@@ -94,6 +100,17 @@ function signIn(values, history, fetchMenuFromRear) {
 function logout() {
   window.localStorage.clear();
   window.location.reload();
+}
+
+async function initialize(user) {
+  await fetch(`${baseUrl}/api/initialize/${user.userId}`, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    mode: 'cors',
+    method: 'GET',
+  })
+  .then(() => {}, e => Promise.reject(e));
 }
 
 export {
