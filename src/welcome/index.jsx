@@ -14,6 +14,9 @@ import {
 } from "react-router-dom";
 import { isSignedIn, getNickName } from '../auth/util';
 import book from '../img/book.png';
+import p1 from '../img/instruction_1.png';
+import p2 from '../img/instruction_2.png';
+import p3 from '../img/instruction_3.png';
 
 const Welcome = () => {
 
@@ -32,10 +35,7 @@ const Welcome = () => {
       <h2>This is an Application that you can create and manage notes</h2>
       <ul>
         <li>Full Markdown syntax support & Real time compilation/display</li>
-        <li>You can keep mutiple notebooks(folders), each of them can hold mutiple notes(files).</li>
-        <li>A note can be stored in either a notebook or in root directory.</li>
-        <li>Currently, you cannot store a notebook in another notebook</li>
-        <li>Initially, you have a few notebooks and a few notes in them.</li>
+        <li>Manage your notebooks(folders) and notes(files).</li>
         <li>Auto saving</li>
       </ul>
       <br/>
@@ -43,7 +43,10 @@ const Welcome = () => {
       
       <h2>Navigation</h2>
       <p>
-        Use the Menu on left side for navigation. 
+        Use the Menu on left side for navigation. <br/>
+        A note can be stored in either a notebook or in root directory. <br/>
+        <span className="bold">You cannot store a notebook in another notebook.</span> <br/>
+        <span className="bold">Initially, there are a few notes and notebooks for you to explore.</span>
       </p>
       <ul>
           <li><FolderOutlined/> directs you to a notebook view which allows you to manage everything in it.</li>
@@ -55,6 +58,15 @@ const Welcome = () => {
         Click <NavLink to="/root">here</NavLink> to view your root directory.
       </p>
       <br/>
+
+      <h2>How to insert pictures</h2>
+      <p className="bold">Copy address</p>
+      <img className="instruction-pic-1" src={p1} alt='cannot be displayed due to network reasons'></img><br/><br/>
+      <p className="bold">Use the shortcut button</p>
+      <img className="instruction-pic-2" src={p2} alt='cannot be displayed due to network reasons'></img><br/><br/>
+      <p className="bold">Paste the address</p>
+      <img className="instruction-pic-3" src={p3} alt='cannot be displayed due to network reasons'></img><br/><br/>
+
 
       <h2>About Markdown</h2>
       <div style={{display: "flex"}}>
