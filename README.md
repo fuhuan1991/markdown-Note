@@ -1,10 +1,9 @@
 
 ## Intro
 This is a Markdown note application. 
-- You can create notes and notebooks(folders) in this application.
-- All the notes and folders will be saved in browser.
-- In edit mode, type markdown script and the compiled result will be displayed in real time.
-- To insert some specific markdown pattern, use the buttons on the top.
+- You can create notes in different notebooks.
+- Type markdown script and get result in real time.
+- Insert specific markdown patterns by shortcut buttons.
 - Use sidebar menu for navigation.
 
 
@@ -20,6 +19,7 @@ This is a Markdown note application.
 - [x] Deploy static content by Amplify
 - [x] Setup REST API and DynamoDB
 - [ ] Setup S3 storage
+- [ ] Support mobile devices
 
 ## Try it
 http://ec2-107-21-147-203.compute-1.amazonaws.com
