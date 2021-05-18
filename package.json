@@ -13,6 +13,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "file-saver": "^2.0.2",
+    "forever": "^3.0.4",
     "history": "^5.0.0",
     "node-sass": "^4.14.1",
     "prop-types": "^15.7.2",
@@ -31,7 +32,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "npm install && pm2 start server_FE.js"
+    "deploy": "npm install && forever stopall && forever start server_FE.js"
   },
   "eslintConfig": {
     "extends": "react-app"
