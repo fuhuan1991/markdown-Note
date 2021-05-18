@@ -2,7 +2,7 @@ var express = require('express');
 var cors = require('cors');
 
 var app = express();
-const PORT = 7777;
+const PORT = 2000;
 app.use(cors());
 app.use(express.static('./build')); //Serves resources from public folder
 
