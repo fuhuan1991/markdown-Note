@@ -1,10 +1,11 @@
 
 ## Intro
-This is a Markdown note application. 
+This is the front-end part of a Markdown note application. 
 - You can create notes in different notebooks.
 - Type markdown script and get result in real time.
 - Insert specific markdown patterns by shortcut buttons.
 - Use sidebar menu for navigation.
+- Insert pictures
 
 
 ## Tech Stack
