@@ -1,6 +1,6 @@
 {
-  "name": "prototype",
-  "version": "0.1.0",
+  "name": "MarkDown-Note-FE",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
