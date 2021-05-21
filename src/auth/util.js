@@ -6,13 +6,13 @@ import { baseUrl } from '../config';
 
 const auth = {};
 window.auth = auth;
-const signUpSuccTitle = 'Signup success!';
-const signUpSuccMsg = 'Your user account has been created. Please check your email inbox for confirmation code.';
-const signUpFailTitle = 'Signup failed';
-const confirmSuccTitle = 'email address confirmed!';
-const confirmFailTitle = 'signup failed';
-const signInSuccTitle = 'Sign in success';
-const signInFailTitle = 'Sign in failed';
+const SIGNUP_SUCC_TITLE = 'Signup success!';
+const SIGNUP_SUCC_MSG = 'Your user account has been created. Please check your email inbox for confirmation code.';
+const SIGNUP_FAIL_TITLE = 'Signup failed';
+const CONFIRM_SUCC_TITLE = 'email address confirmed!';
+const CONFIRM_FAIL_TITLE = 'signup failed';
+const SIGNIN_SUCC_TITLE = 'Sign in success';
+const SIGNIN_FAIL_TITLE = 'Sign in failed';
 
 
 function isSignedIn() {
@@ -43,17 +43,17 @@ function signUp(values, history) {
   });
 
   p.then((result) => {
-    notify('success', signUpSuccTitle, signUpSuccMsg);
+    notify('success', SIGNUP_SUCC_TITLE, SIGNUP_SUCC_MSG);
     console.log(result);
     window.auth.unConfirmedUser = result.user;
     window.auth.unConfirmedUser.userId = result.userSub;
     history.push('/confirm');
   }, 
   (result) => {
-    notify('error', signUpFailTitle, result.message);
+    notify('error', SIGNUP_FAIL_TITLE, result.message);
     console.log(result);
   }).catch((error) => {
-    notify('error', signUpFailTitle, error);
+    notify('error', SIGNUP_FAIL_TITLE, error);
     console.error(error);
   });
 }
@@ -61,7 +61,7 @@ function signUp(values, history) {
 function confirm(values, history) {
   const p = Auth.confirmSignUp(values.email, values.code);
   p.then(async (result) => {
-    notify('success', confirmSuccTitle, '');
+    notify('success', CONFIRM_SUCC_TITLE, '');
     console.log(result);
     window.auth.user = window.auth.unConfirmedUser;
     delete window.auth.unConfirmedUser;
@@ -70,10 +70,10 @@ function confirm(values, history) {
     history.push('/signin');
   }, 
   (result) => {
-    notify('error', confirmFailTitle, result.message);
+    notify('error', CONFIRM_FAIL_TITLE, result.message);
     console.log(result);
   }).catch((error) => {
-    notify('error', confirmFailTitle, error);
+    notify('error', CONFIRM_FAIL_TITLE, error);
     console.error(error);
   });
 }
@@ -81,7 +81,7 @@ function confirm(values, history) {
 function signIn(values, history, fetchMenuFromRear) {
   const p = Auth.signIn(values.email, values.password);
   p.then((cognitoUser) => {
-    notify('success', signInSuccTitle, '');
+    notify('success', SIGNIN_SUCC_TITLE, '');
     console.log({ cognitoUser });
     const str = JSON.stringify(cognitoUser);
     window.localStorage.setItem('user', str);
@@ -89,10 +89,10 @@ function signIn(values, history, fetchMenuFromRear) {
     history.push('/welcome');
   },
   (result) => {
-    notify('error', signInFailTitle, result.message);
+    notify('error', SIGNIN_FAIL_TITLE, result.message);
     console.log(result);
   }).catch((error) => {
-    notify('error', signInFailTitle, error);
+    notify('error', SIGNIN_FAIL_TITLE, error);
     console.error(error);
   });
 }
