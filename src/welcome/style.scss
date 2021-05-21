@@ -71,14 +71,44 @@
         font-weight: bold;
     }
 
-    .instruction-pic-1{
-        width: 240px;
+    .underline{
+        text-decoration: underline;
     }
 
-    .instruction-pic-2{
-        width: 600px;
+    .instruction-a{
+        margin-bottom: 40px;
+        .section{
+            display: flex;
+        }
+        .instruction-pic-a1{
+            width: 800px;
+        }
+        .instruction-pic-a2, .instruction-pic-a3, .instruction-pic-a4, .instruction-pic-a5{
+            width: 500px;
+        }
+        .instruction-pic-a4, .instruction-pic-a5{
+            margin-left: 40px;
+        }
     }
-    .instruction-pic-3{
-        width: 600px;
+
+    .instruction-b{
+        display: flex;
+
+        .section-left{
+            // margin-left: 40px;
+        }
+        .section-right{
+            margin-left: 120px;
+        }
+        .instruction-pic-b1{
+            width: 200px;
+        }
+    
+        .instruction-pic-b2{
+            width: 600px;
+        }
+        .instruction-pic-b3{
+            width: 360px;
+        }
     }
 }

@@ -14,9 +14,14 @@ import {
 } from "react-router-dom";
 import { isSignedIn, getNickName } from '../auth/util';
 import book from '../img/book.png';
-import p1 from '../img/instruction_1.png';
-import p2 from '../img/instruction_2.png';
-import p3 from '../img/instruction_3.png';
+import instruction_pic_a1 from '../img/instruction_a1.png';
+import instruction_pic_a2 from '../img/instruction_a2.png';
+import instruction_pic_a3 from '../img/instruction_a3.png';
+import instruction_pic_a4 from '../img/instruction_a4.png';
+import instruction_pic_a5 from '../img/instruction_a5.png';
+import instruction_pic_b1 from '../img/instruction_b1.png';
+import instruction_pic_b2 from '../img/instruction_b2.png';
+import instruction_pic_b3 from '../img/instruction_b3.png';
 
 const Welcome = () => {
 
@@ -45,8 +50,8 @@ const Welcome = () => {
       <p>
         Use the Menu on left side for navigation. <br/>
         A note can be stored in either a notebook or in root directory. <br/>
-        <span className="bold">You cannot store a notebook in another notebook.</span> <br/>
-        <span className="bold">Initially, there are a few notes and notebooks for you to explore.</span>
+        <span className="bold" className="underline">You cannot store a notebook in another notebook.</span> <br/>
+        <span className="bold" className="underline">Initially, there are a few notes and notebooks for you to explore.</span>
       </p>
       <ul>
           <li><FolderOutlined/> directs you to a notebook view which allows you to manage everything in it.</li>
@@ -59,15 +64,41 @@ const Welcome = () => {
       </p>
       <br/>
 
-      <h2>How to insert pictures</h2>
-      <p className="bold">Copy address</p>
-      <img className="instruction-pic-1" src={p1} alt='cannot be displayed due to network reasons'></img><br/><br/>
-      <p className="bold">Use the shortcut button</p>
-      <img className="instruction-pic-2" src={p2} alt='cannot be displayed due to network reasons'></img><br/><br/>
-      <p className="bold">Paste the address</p>
-      <img className="instruction-pic-3" src={p3} alt='cannot be displayed due to network reasons'></img><br/><br/>
+      <h2>Some Tips:</h2>
+      <h2>--------------------------------------</h2>
+      <h2>How to insert Markdown templates?</h2>
+      <div className="instruction-a">
+        <p>1. The shortcut is on the topside of the editor.</p>
+        <img className="instruction-pic-a1" src={instruction_pic_a1} alt='cannot be displayed due to network reasons'></img>
+        <br/><br/>
+        <p>2. Select the template you want to insert.</p>
+        <div className="section">
+          <img className="instruction-pic-a2" src={instruction_pic_a2} alt='cannot be displayed due to network reasons'></img>
+          <img className="instruction-pic-a4" src={instruction_pic_a4} alt='cannot be displayed due to network reasons'></img>
+        </div>
+        <br/><br/>
+        <p>3. The code template would be generated in the editor.</p>
+        <div className="section">
+          <img className="instruction-pic-a3" src={instruction_pic_a3} alt='cannot be displayed due to network reasons'></img>
+          <img className="instruction-pic-a5" src={instruction_pic_a5} alt='cannot be displayed due to network reasons'></img>
+        </div>
+      </div>
 
 
+      <h2>How to insert pictures from internet?</h2>
+      <div className="instruction-b">
+        <div className="section-left">
+          <p>1. Copy address</p>
+          <img className="instruction-pic-b1" src={instruction_pic_b1} alt='cannot be displayed due to network reasons'></img><br/><br/>
+        </div>
+        <div className="section-right">
+          <p>2. Use the shortcut button</p>
+          <img className="instruction-pic-b2" src={instruction_pic_b2} alt='cannot be displayed due to network reasons'></img><br/><br/>
+          <p>3. Paste the address</p>
+          <img className="instruction-pic-b3" src={instruction_pic_b3} alt='cannot be displayed due to network reasons'></img><br/><br/>
+        </div>
+      </div>
+      
       <h2>About Markdown</h2>
       <div style={{display: "flex"}}>
         <svg xmlns="http://www.w3.org/2000/svg" width="104" height="64" viewBox="0 0 208 128"><rect width="198" height="118" x="5" y="5" ry="10" stroke="#FFD152" strokeWidth="10" fill="none"/><path  fill="#FFD152" d="M30 98V30h20l20 25 20-25h20v68H90V59L70 84 50 59v39zm125 0l-30-33h20V30h20v35h20z"/><script xmlns=""/></svg>
@@ -83,15 +114,14 @@ It doesn’t take long to learn the Markdown syntax, and once you know how to us
 
       <h2>About me 
         &nbsp;
-        <a href="https://fuhuan1991.github.io"><UserOutlined /></a>
-        &nbsp;
         <a href="https://github.com/fuhuan1991"><GithubOutlined /></a>
       </h2>
       <p>
         I'm Huan Fu, a Software Engineer with 2 years of developing experience of data platform and E-commerce web applications. 
         I'm always passionate in applying programing skills to create better experience for users.
-        Currently, I'm a master’s student in computer science at Tufts University.
+        I just finished my computer science master's degree at Tufts University.
       </p>
+      <a href="https://fuhuan1991.github.io">My Portfolio</a>
     </div>
   );
 }
