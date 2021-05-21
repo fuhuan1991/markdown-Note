@@ -3,6 +3,11 @@ import { notify } from '../notification';
 import fetch from 'unfetch';
 import { baseUrl } from '../config';
 
+// Amazon Cognito is used as the Authentication service. 
+// After a successful login, a JSON object that contains related user information will 
+// be stored in local storage.
+// In that JSON object, an attribute called user name is used as the unique identifier for each user.
+
 
 const auth = {};
 window.auth = auth;
