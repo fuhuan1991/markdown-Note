@@ -37,6 +37,11 @@ function getUserId() {
   return user.username;
 }
 
+/*
+  function for signup 
+  values: a object that contains user information, like email, password and nickname.
+  history: a history object from react-router, used to redirect user to another page.
+*/
 function signUp(values, history) {
   const p = Auth.signUp({
     username: values.email,
@@ -63,6 +68,12 @@ function signUp(values, history) {
   });
 }
 
+/*
+  After a the user setup user and pass word, an emil will sent to user's mailbox
+  The user need to retrive a confirmation code from that email and use it to finish the registration
+  values: a object that contains user's email and a confirmation code
+  history: a history object from react-router, used to redirect user to another page.
+*/
 function confirm(values, history) {
   const p = Auth.confirmSignUp(values.email, values.code);
   p.then(async (result) => {
@@ -83,6 +94,12 @@ function confirm(values, history) {
   });
 }
 
+/*
+  function for signIn 
+  values: a object that contains user information, like email and password.
+  history: a history object from react-router, used to redirect user to another page.
+  fetchMenuFromRear: a function that supposed to fetch menu content from rear end for current user
+*/
 function signIn(values, history, fetchMenuFromRear) {
   const p = Auth.signIn(values.email, values.password);
   p.then((cognitoUser) => {
@@ -107,6 +124,11 @@ function logout() {
   window.location.reload();
 }
 
+/*
+  a function to generate user's initial content. a few predefined folders and notes will be generated for this user.
+  This function is purely for presentation.
+  user: a object that contains user information
+*/
 async function initialize(user) {
   await fetch(`${baseUrl}/api/initialize/${user.userId}`, {
     headers: {
