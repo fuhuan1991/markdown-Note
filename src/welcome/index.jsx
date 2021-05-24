@@ -6,7 +6,6 @@ import {
   FolderOutlined,
   FolderAddOutlined,
   GithubOutlined,
-  UserOutlined
 } from '@ant-design/icons';
 import {
   NavLink,
@@ -50,8 +49,8 @@ const Welcome = () => {
       <p>
         Use the Menu on left side for navigation. <br/>
         A note can be stored in either a notebook or in root directory. <br/>
-        <span className="bold" className="underline">You cannot store a notebook in another notebook.</span> <br/>
-        <span className="bold" className="underline">Initially, there are a few notes and notebooks for you to explore.</span>
+        <span className="bold underline">You cannot store a notebook in another notebook.</span> <br/>
+        <span className="bold underline">Initially, there are a few notes and notebooks for you to explore.</span>
       </p>
       <ul>
           <li><FolderOutlined/> directs you to a notebook view which allows you to manage everything in it.</li>
