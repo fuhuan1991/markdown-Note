@@ -3,6 +3,10 @@ import React from 'react';
 import { notify } from '../notification';
 import PropTypes from 'prop-types';
 
+// This is a popup component that contains a input slot. 
+// After confirmation, the input value will be passed to the callback function.
+// The callback function can be either sync or async.
+
 class InputPopup extends React.Component {
 
   constructor(props) {

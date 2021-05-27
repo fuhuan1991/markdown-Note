@@ -5,6 +5,7 @@ import { Menu, Dropdown } from 'antd';
 import 'codemirror/mode/markdown/markdown';
 import PropTypes from 'prop-types';
 import InputPopupWrapper from '../../inputPopup/InputPopupWrapper';
+import UploadPopupWrapper from '../../uploadPopup/UploadPopupWrapper';
 import {
   EnterOutlined,
   FontSizeOutlined,
@@ -60,7 +61,11 @@ class MkEditor extends React.Component {
     }
   }
 
+  // the function that insert code templates into the editor.
+  // key: the type of the template, like "ol" or "table"
+  // data: sometimes, the template to be inserted need additional data input, like picture address 
   handleInsert = ({ key }, data) => {
+    console.log(data)
     if (key === 'pic') {
       this.insertTextAtCursor(`\n![alt text](${data.value})\n`);
     } else if (key === 'link') {
@@ -91,13 +96,35 @@ class MkEditor extends React.Component {
   listMenu = (
     <Menu onClick={this.handleInsert}>
       <Menu.Item key="ol">
-       Ordered list
+        Ordered list
       </Menu.Item>
       <Menu.Item key="ul">
         Unordered list
       </Menu.Item>
       <Menu.Item key="check">
         Check list
+      </Menu.Item>
+    </Menu>
+  );
+
+  pictureMenu = (
+    <Menu>
+      <Menu.Item key="pic_address">
+        <InputPopupWrapper 
+          title="Insert picture"
+          placeholder="Paste the picture link here"
+          initialValue={''}
+          callback={this.handleInsert.bind(this, {key: 'pic'})}
+          async={false}
+          content={<span>Picture from internet</span>}
+        />
+      </Menu.Item>
+      <Menu.Item key="pic_upload">
+        <UploadPopupWrapper 
+          title="Upload picture"
+          callback={this.handleInsert.bind(this, {key: 'pic'})}
+          content={<span>Upload picture</span>}
+        />
       </Menu.Item>
     </Menu>
   );
@@ -135,14 +162,17 @@ class MkEditor extends React.Component {
           <Dropdown overlay={this.listMenu} trigger={['click']}>
             <span className='option'>List</span>
           </Dropdown>
-          <InputPopupWrapper 
+          {/* <InputPopupWrapper 
             title="Insert picture"
             placeholder="Paste the picture link here"
             initialValue={''}
             callback={this.handleInsert.bind(this, {key: 'pic'})}
             async={false}
             content={<span className='option'>Picture</span>}
-          />
+          /> */}
+          <Dropdown overlay={this.pictureMenu} trigger={['click']}>
+            <span className='option'>Picture</span>
+          </Dropdown>
           <InputPopupWrapper 
             title="Insert link"
             placeholder="Paste the link here"

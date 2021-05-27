@@ -64,7 +64,6 @@ const Welcome = () => {
       <br/>
 
       <h2>Some Tips:</h2>
-      <h2>--------------------------------------</h2>
       <h2>How to insert Markdown templates?</h2>
       <div className="instruction-a">
         <p>1. The shortcut is on the topside of the editor.</p>
@@ -75,13 +74,14 @@ const Welcome = () => {
           <img className="instruction-pic-a2" src={instruction_pic_a2} alt='cannot be displayed due to network reasons'></img>
           <img className="instruction-pic-a4" src={instruction_pic_a4} alt='cannot be displayed due to network reasons'></img>
         </div>
-        <br/><br/>
+        <br/>
         <p>3. The code template would be generated in the editor.</p>
         <div className="section">
           <img className="instruction-pic-a3" src={instruction_pic_a3} alt='cannot be displayed due to network reasons'></img>
           <img className="instruction-pic-a5" src={instruction_pic_a5} alt='cannot be displayed due to network reasons'></img>
         </div>
       </div>
+      <br/><br/><br/>
 
 
       <h2>How to insert pictures from internet?</h2>
@@ -97,6 +97,9 @@ const Welcome = () => {
           <img className="instruction-pic-b3" src={instruction_pic_b3} alt='cannot be displayed due to network reasons'></img><br/><br/>
         </div>
       </div>
+      <br/><br/><br/>
+
+      
       
       <h2>About Markdown</h2>
       <div style={{display: "flex"}}>
