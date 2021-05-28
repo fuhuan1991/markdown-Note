@@ -67,7 +67,7 @@ class UploadPopup extends React.Component {
             </p>
             <p className="ant-upload-text">Click or drag picture file to this area to upload</p>
             <p className="ant-upload-hint">
-              Support file type: png, jpg
+              Support file type: png, jpg, jpeg, gif, bmp, webp
             </p>
           </Dragger>
         </Modal>

@@ -21,6 +21,10 @@ import instruction_pic_a5 from '../img/instruction_a5.png';
 import instruction_pic_b1 from '../img/instruction_b1.png';
 import instruction_pic_b2 from '../img/instruction_b2.png';
 import instruction_pic_b3 from '../img/instruction_b3.png';
+import instruction_pic_c1 from '../img/instruction_c1.png';
+import instruction_pic_c2 from '../img/instruction_c2.png';
+import instruction_pic_c3 from '../img/instruction_c3.png';
+import instruction_pic_c4 from '../img/instruction_c4.png';
 
 const Welcome = () => {
 
@@ -49,8 +53,8 @@ const Welcome = () => {
       <p>
         Use the Menu on left side for navigation. <br/>
         A note can be stored in either a notebook or in root directory. <br/>
-        <span className="bold underline">You cannot store a notebook in another notebook.</span> <br/>
-        <span className="bold underline">Initially, there are a few notes and notebooks for you to explore.</span>
+        <span className="bold">You cannot store a notebook in another notebook.</span> <br/>
+        <span className="bold">Initially, there are a few notes and notebooks for you to explore.</span>
       </p>
       <ul>
           <li><FolderOutlined/> directs you to a notebook view which allows you to manage everything in it.</li>
@@ -91,11 +95,25 @@ const Welcome = () => {
           <img className="instruction-pic-b1" src={instruction_pic_b1} alt='cannot be displayed due to network reasons'></img><br/><br/>
         </div>
         <div className="section-right">
-          <p>2. Use the shortcut button</p>
+          <p>2. Use the shortcut button, select picture from internet</p>
           <img className="instruction-pic-b2" src={instruction_pic_b2} alt='cannot be displayed due to network reasons'></img><br/><br/>
           <p>3. Paste the address</p>
           <img className="instruction-pic-b3" src={instruction_pic_b3} alt='cannot be displayed due to network reasons'></img><br/><br/>
         </div>
+      </div>
+      <br/><br/><br/>
+
+
+
+      <h2>How to insert pictures from your own device?</h2>
+      <div className="instruction-c">
+        <p>1. Use the shortcut button, select upload picture</p>
+        <img className="instruction-pic-c1" src={instruction_pic_c1} alt='cannot be displayed due to network reasons'></img><br/><br/>
+        <p>2. Choose your picture from your own device</p>
+        <img className="instruction-pic-c2" src={instruction_pic_c2} alt='cannot be displayed due to network reasons'></img><br/><br/>
+        <img className="instruction-pic-c3" src={instruction_pic_c3} alt='cannot be displayed due to network reasons'></img><br/><br/>
+        <p>3. The upload should be completed shortly</p>
+        <img className="instruction-pic-c4" src={instruction_pic_c4} alt='cannot be displayed due to network reasons'></img><br/><br/>
       </div>
       <br/><br/><br/>
 

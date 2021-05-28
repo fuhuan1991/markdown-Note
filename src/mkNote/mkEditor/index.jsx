@@ -116,14 +116,14 @@ class MkEditor extends React.Component {
           initialValue={''}
           callback={this.handleInsert.bind(this, {key: 'pic'})}
           async={false}
-          content={<span>Picture from internet</span>}
+          content={<span className="drop-down-trigger">Picture from internet</span>}
         />
       </Menu.Item>
       <Menu.Item key="pic_upload">
         <UploadPopupWrapper 
           title="Upload picture"
           callback={this.handleInsert.bind(this, {key: 'pic'})}
-          content={<span>Upload picture</span>}
+          content={<span className="drop-down-trigger">Upload picture</span>}
         />
       </Menu.Item>
     </Menu>
@@ -162,14 +162,6 @@ class MkEditor extends React.Component {
           <Dropdown overlay={this.listMenu} trigger={['click']}>
             <span className='option'>List</span>
           </Dropdown>
-          {/* <InputPopupWrapper 
-            title="Insert picture"
-            placeholder="Paste the picture link here"
-            initialValue={''}
-            callback={this.handleInsert.bind(this, {key: 'pic'})}
-            async={false}
-            content={<span className='option'>Picture</span>}
-          /> */}
           <Dropdown overlay={this.pictureMenu} trigger={['click']}>
             <span className='option'>Picture</span>
           </Dropdown>
